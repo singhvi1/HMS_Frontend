@@ -1,0 +1,11 @@
+
+@import "tailwindcss";
+@reference utilities;
+
+.input {
+  @apply border rounded px-3 py-2 w-full;
+}
+
+.input:focus {
+  @apply outline-none ring-2 ring-indigo-400;
+}

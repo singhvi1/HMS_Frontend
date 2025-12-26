@@ -22,6 +22,7 @@ import CreateStudent from './Components/forms/CreateStudent'
 import StudentList from './Components/pages/admins/studentlist/StudentList'
 import AdminIssueList from './Components/pages/admins/issues/AdminIssueList'
 import RoomsList from './Components/pages/admins/rooms/RoomsList'
+import LeavesList from './Components/pages/admins/leaves/LeavesList'
 import AdminStudentProfile from './Components/pages/admins/studentlist/AdminStudentProfile'
 import AdminRoomProfile from './Components/pages/admins/rooms/AdminRoomProfile'
 function App() {
@@ -57,7 +58,7 @@ function App() {
                 <Route path='rooms' element={<RoomsList />} />
                 <Route path='rooms/:id' element={<AdminRoomProfile />} />
                 <Route path='issues' element={<AdminIssueList />} />
-
+                <Route path='leaves' element={<LeavesList />} />
               </Route>
             </Route>
 

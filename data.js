@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const student = {
   full_name: "Vikash Kumar",
   email: "vikash@example.com",
@@ -192,6 +194,45 @@ export const STATUS_COLOR = {
   resolved: "bg-green-100 text-green-700"
 };
 
+// ---------------
+const reasons = [
+  "Family function at hometown",
+  "Medical checkup scheduled",
+  "Attending cousin's wedding",
+  "Personal emergency at home",
+  "Festival celebration with parents",
+  "Property documentation work",
+  "Brother's school admission process",
+  "Grandparent health concern",
+];
 
+const destinations = [
+  "Hyderabad",
+  "Bangalore",
+  "Chennai",
+  "Mumbai",
+  "Vijayawada",
+  "Warangal",
+  "Vizag",
+];
 
+export const leaves = Array.from({ length: 85 }, (_, i) => {
+  const s = students[i % students.length];
+  const from = dayjs().add(i % 5, "day");
+  const to = from.add((i % 3) + 1, "day");
 
+  return {
+    _id: `lv_${i + 1}`,
+    student_id: s._id,
+    full_name: s.full_name,
+    sid: s.sid,
+    branch: s.branch,
+    block: s.block,
+    room_number: s.room_number,
+    from_date: from.format("YYYY-MM-DD"),
+    to_date: to.format("YYYY-MM-DD"),
+    destination: destinations[i % destinations.length],
+    reason: reasons[i % reasons.length],
+    status: i % 6 === 0 ? "approved" : i % 9 === 0 ? "rejected" : "pending",
+  };
+});

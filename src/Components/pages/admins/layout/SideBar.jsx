@@ -71,7 +71,7 @@ const SideBar = ({ isOpen, onClose }) => {
 
             label="Leave"
             onClick={() => {
-              // navigate("/student/leave/new");
+              navigate("/admin/leaves");
               onClose();
             }}
           />

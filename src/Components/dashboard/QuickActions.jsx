@@ -16,7 +16,6 @@ const QuickActions = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-
         <Link to="/student/issues/new">
           <ActionCard icon={<Wrench size={18} />} title="Maintenance" color="bg-yellow-50">
             Raise new issue

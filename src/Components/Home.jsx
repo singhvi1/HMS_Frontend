@@ -3,12 +3,15 @@ import Topbar from './layout/Topbar';
 import Navbar from './layout/NavBar';
 import { announcements, student } from '../../data';
 import AnnounceMents from './dashboard/AnnounceMents';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
-  console.log("student",student)
+  const loogedinUser = useSelector((state) => state.loggedinUser)
+  console.log(loogedinUser);
   return (
     <>
-      <Topbar user={student} />
+      <Topbar user={loogedinUser} />
+      {/* <Topbar user={loogedinUser} /> */}
       <Navbar />
       <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 py-16 px-4">
         <div className="container mx-auto px-4">
@@ -74,7 +77,7 @@ const Home = () => {
               </div>
             </div>
             {/* contacts */}
-            
+
 
 
           </div>

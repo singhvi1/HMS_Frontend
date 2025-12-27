@@ -1,0 +1,33 @@
+const Button = ({
+    children,
+    onClick,
+    type = "button",
+    variant = "primary",
+    disabled = false,
+    className = ""
+}) => {
+    const base =
+        "rounded font-medium transition disabled:opacity-60 disabled:cursor-not-allowed";
+
+    const variants = {
+        primary: "bg-black text-white hover:bg-gray-900",
+        secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200",
+        danger: "bg-red-600 text-white hover:bg-red-700",
+        outline: "border border-gray-300 text-gray-700 hover:bg-gray-50",
+        text: "bg-transparent text-gray-600 hover:text-black hover:bg-transparent px-0",
+        
+    };
+
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            className={`${base} ${variants[variant]} ${className}`}
+        >
+            {children}
+        </button>
+    );
+};
+
+export default Button;

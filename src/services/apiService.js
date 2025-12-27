@@ -46,3 +46,24 @@ export const paymentService = {
 export const dashboardService = {
   getDashboardStats: () => api.get('/admin/dashboard'),
 };
+
+export const authService = {
+  loginUser: (email, password) => api.post('/login', { email, password }),
+  logoutUser: () => api.post('/logout'),
+}
+
+//future : 
+export const hostelService = {
+  create: (data) => api.post("/admin/hostel", data),
+
+  getAll: () => api.get("/admin/hostel"),
+
+  getById: (id) => api.get(`/admin/hostel/${id}`),
+
+  update: (id, data) => api.patch(`/admin/hostel/${id}`, data),
+
+  toggleStatus: (id) =>
+    api.patch(`/admin/hostel/${id}/toggle-status`),
+
+  delete: (id) => api.delete(`/admin/hostel/${id}`)
+};

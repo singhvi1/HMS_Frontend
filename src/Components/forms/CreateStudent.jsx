@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { BackButton } from "../index"
 
 const CreateStudent = () => {
     const navigate = useNavigate()
@@ -65,13 +65,7 @@ const CreateStudent = () => {
     return (
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
             {/* Back button */}
-            <button
-                onClick={() => navigate(-1)}
-                className="mb-4 flex items-center text-sm text-gray-600 hover:text-black"
-            >
-                <ArrowLeft className="w-4 h-4 mr-1" />
-                Back
-            </button>
+            <BackButton />
             <h1 className="text-2xl font-bold mb-6">Create Student</h1>
 
             {error && <p className="text-red-600 mb-4">{error}</p>}

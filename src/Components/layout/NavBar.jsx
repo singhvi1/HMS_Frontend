@@ -1,12 +1,19 @@
 import { Menu, LogOut, Home } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { removeLoggedinUser, setLoggedinUser } from "../../utils/store/logedinUser";
+import { authService } from "../../services/apiService";
 
 const Navbar = ({ onMenuClick }) => {
   const navigate = useNavigate();
-  const user = false; // temporary
+  const user = useSelector((state) => state.loggedinUser);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    navigate("/login");
+  const handleLogout = async () => {
+    const res = await authService.logoutUser();
+    dispatch(setLoggedinUser(null));   // clear redux state
+    navigate("/login");  
+    console.log(res)              // SPA navigation
   };
 
   return (
@@ -36,7 +43,7 @@ const Navbar = ({ onMenuClick }) => {
               className="flex items-center gap-1 px-4 py-2 bg-indigo-700 rounded-md hover:bg-indigo-800"
             >
               <LogOut size={16} />
-              Logout
+
             </button>
           ) : (
             <Link

@@ -1,6 +1,7 @@
-import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {BackButton } from "../index"
+
 
 const AnnouncementForm = ({ initialData, onSubmit }) => {
   const isEdit = Boolean(initialData);
@@ -41,13 +42,7 @@ const AnnouncementForm = ({ initialData, onSubmit }) => {
     <div className="min-h-screen bg-gray-50 p-6">
 
       {/* Back button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 flex items-center text-sm text-gray-600 hover:text-black"
-      >
-        <ArrowLeft className="w-4 h-4 mr-1" />
-        Back
-      </button>
+      <BackButton />
 
       {/* Centered form */}
       <div className="flex justify-center">

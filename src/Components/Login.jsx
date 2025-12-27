@@ -1,11 +1,9 @@
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "../utils/constant";
 import Navbar from "../Components/layout/NavBar"; // adjust path if needed
 import { useDispatch } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
-import { student } from "../../data";
+import { authService } from "../services/apiService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,17 +16,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const res = await axios.post(
-        BASE_URL + "/login",
-        { email, password },
-        { withCredentials: true }
-      );
+      const res = await authService.loginUser(email, password);
+      console.log("login successfully")
+      console.log(res);
+      // const role = res.data.user.role;
 
       if (res.data.success) {
-        const role = res.data.user.role;
-        window.location.href = `/${role}`;
-        dispactch(setLoggedinUser(student));
-        // dispactch(setLoggedinUser(res.data.user));
+        console.log(res.data)
+        // window.location.href = `/${role}`;
+        console.log("login page loaaded")
+        dispactch(setLoggedinUser(res.data.user));
       }
     } catch (err) {
       setError(
@@ -63,7 +60,7 @@ const Login = () => {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)} autoComplete="current-email"
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
                 required
               />
@@ -77,6 +74,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
                 required
               />

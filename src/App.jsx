@@ -1,11 +1,9 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Home from './Components/Home'
 import AdminDashBoard from './Components/pages/admins/AdminDashBoard'
-import Staff from './Components/pages/staffs/Staff'
 import Login from './Components/Login'
-import { Provider } from "react-redux";
-import store from "./utils/store/store"
+import { useDispatch, useSelector } from "react-redux";
 import StudentDashboard from './Components/pages/Student/StudentDashBoard'
 import MaintenanceForm from './Components/pages/Student/MaintenanceForm'
 import MaintenanceList from './Components/pages/Student/MaintenanceList'
@@ -25,52 +23,98 @@ import RoomsList from './Components/pages/admins/rooms/RoomsList'
 import LeavesList from './Components/pages/admins/leaves/LeavesList'
 import AdminStudentProfile from './Components/pages/admins/studentlist/AdminStudentProfile'
 import AdminRoomProfile from './Components/pages/admins/rooms/AdminRoomProfile'
+
+import { HostelOverview, HostelForm, EditHostel } from "./Components/index"
+import api from './utils/api'
+import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
+import { useEffect } from 'react'
+
 function App() {
+  const user = useSelector((state) => state.loggedinUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      try {
+        const res = await api.get("/users/me");
+        dispatch(setLoggedinUser(res.data.user));
+        console.log("auto login called")
+      } catch (err) {
+        dispatch(removeLoggedinUser());
+        console.log(err)
+      }
+    };
+
+    fetchMe();
+  }, []);
+
   return (
-    <>
-      <Provider store={store}>
-        <BrowserRouter basename="/">
-          <Routes>
-            <Route>
-              <Route path="/student" element={<StudentDashboard />} >
-                <Route index element={<StudentHome />} />
-                <Route path='leave/new' element={<LeaveForm />} />
-                <Route path='issues' element={<MaintenanceList />} />
-                <Route path='issues/new' element={<MaintenanceForm />} />
-                <Route path='notfound' element={<NotFound />} />
-                <Route path="ann" element={<AnnounceMents announcements={announcements} />} />
-              </Route>
+    <Routes>
+      {user ? (
+        <>
+          {/* Logged-in users */}
+          <Route path="/login" element={<Navigate to="/" replace />} />
+
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to={user.role === "student" ? "/student" : "/admin"}
+                replace
+              />
+            }
+          />
+
+          {/* STUDENT */}
+          {user.role === "student" && (
+            <Route path="/student" element={<StudentDashboard />}>
+              <Route index element={<StudentHome />} />
+              <Route path="leave/new" element={<LeaveForm />} />
+              <Route path="issues" element={<MaintenanceList />} />
+              <Route path="issues/new" element={<MaintenanceForm />} />
+              <Route path="ann" element={<AnnounceMents announcements={announcements} />} />
+              <Route path="*" element={<NotFound />} />
+
             </Route>
+          )}
+          <Route path="/" element={<Home />} />
 
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+          {/* Admins */}
+          {user.role === "admin" && (
+            <Route path="/admin" element={<AdminDashBoard />}>
+              <Route index element={<AdminHome />} />
 
-            <Route>
-              <Route path='/admin' element={<AdminDashBoard />}>
-                <Route index element={<AdminHome />} />
-                <Route path='ann' element={<AnnounceMents announcements={announcements} />} />
-                <Route path='ann/new' element={<AnnouncementForm />} />
-                <Route path='ann/:id' element={<AnnounceMentDetail announcement={announcements} />} />
-                <Route path='ann/:id/edit' element={<EditAnnouncement />} />
-                <Route path='students/new' element={<CreateStudent />} />
-                <Route path='students' element={<StudentList />} />
-                <Route path='students/:id' element={<AdminStudentProfile student={student} />} />
-                <Route path='rooms' element={<RoomsList />} />
-                <Route path='rooms/:id' element={<AdminRoomProfile />} />
-                <Route path='issues' element={<AdminIssueList />} />
-                <Route path='leaves' element={<LeavesList />} />
-              </Route>
+              <Route path="hostel" element={<HostelOverview />} />
+              <Route path="hostel/new" element={<HostelForm />} />
+              <Route path="hostel/:id/edit" element={<EditHostel />} />
+
+              <Route path="ann" element={<AnnounceMents announcements={announcements} />} />
+              <Route path="ann/new" element={<AnnouncementForm />} />
+              <Route path="ann/:id" element={<AnnounceMentDetail announcement={announcements} />} />
+              <Route path="ann/:id/edit" element={<EditAnnouncement />} />
+
+              <Route path="students" element={<StudentList />} />
+              <Route path="students/new" element={<CreateStudent />} />
+              <Route path="students/:id" element={<AdminStudentProfile student={student} />} />
+              <Route path="rooms" element={<RoomsList />} />
+              <Route path="rooms/:id" element={<AdminRoomProfile />} />
+              <Route path="issues" element={<AdminIssueList />} />
+              <Route path="leaves" element={<LeavesList />} />
+              <Route path="*" element={<NotFound />} />
+
             </Route>
-
-            <Route path="/staff" element={<Staff />} />
-            <Route path="/test" element={<AdminIssueList />} />
-            {/* <Route path="/test1" element={<ThemeToggle />} /> */}
-
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-    </>
-  )
+          )}
+        </>
+      ) : (
+        <>
+          {/* GUEST */}
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </>
+      )}
+    </Routes>
+  );
 }
 
-export default App
+export default App;
+

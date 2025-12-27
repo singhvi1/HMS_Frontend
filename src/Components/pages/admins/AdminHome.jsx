@@ -1,14 +1,13 @@
 import { admin } from "../../../../data"
-import AdminActions from "./adminActions"
-import AdminHero from "./AdminHero"
-
+import { QuickActionsGrid ,AdminHero } from "../../index.js"
+import { adminActions } from "../../common/config.action.js"
 const AdminHome = () => {
-    console.log("admin",admin)
+    // console.log("admin",admin)
     return (
         <section className="space-y-6">
-            
+
             <AdminHero admin={admin} />
-            <AdminActions/>
+            <QuickActionsGrid actions={adminActions} />
         </section>
     )
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BackButton } from "../index"
+import { studentService, userService } from "../../services/apiService";
 
 const CreateStudent = () => {
     const navigate = useNavigate()
@@ -18,7 +18,8 @@ const CreateStudent = () => {
         guardian_contact: "",
 
         block: "",
-        room_number: ""
+        room_number: "",
+        capacity:""
     });
 
     const [loading, setLoading] = useState(false);
@@ -35,12 +36,27 @@ const CreateStudent = () => {
         setLoading(true);
 
         try {
-            await axios.post(
-                "http://localhost:5000/api/warden/students",
-                form,
-                { withCredentials: true }
-            );
+            const payload = {
+                full_name: form.full_name,
+                email: form.email,
+                phone: form.phone,
+                password: form.password,
+                role: "student",
 
+                sid: form.sid,
+                branch: form.branch,
+                permanent_address: form.permanent_address,
+                guardian_name: form.guardian_name,
+                guardian_contact: form.guardian_contact,
+                block: form.block,
+                room_number: form.room_number,
+                capacity:form.capacity,
+            };
+            const res = await studentService.createUserStudent(payload)
+            console.log(payload);
+            if (!res.data?.success) {
+                throw new Error(res.data?.message || "Student creation failed");
+            }
             alert("Student created successfully");
             setForm({
                 full_name: "",
@@ -55,6 +71,7 @@ const CreateStudent = () => {
                 block: "",
                 room_number: ""
             });
+            navigate('/admin/students')
         } catch (err) {
             setError(err?.response?.data?.message || "Something went wrong");
         } finally {
@@ -75,11 +92,17 @@ const CreateStudent = () => {
                 {/* ACCOUNT DETAILS */}
                 <section>
                     <h2 className="font-semibold text-lg mb-3">Account Details</h2>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                         <input name="full_name" placeholder="Full Name" required onChange={handleChange} value={form.full_name} className="input" />
-                        <input name="email" type="email" placeholder="Email" required onChange={handleChange} value={form.email} className="input" />
+
+                        <input name="email" type="email" placeholder="Email" required onChange={handleChange} value={form.email} className="input" autoComplete="password" />
+
                         <input name="phone" placeholder="Phone" required onChange={handleChange} value={form.phone} className="input" />
-                        <input name="password" type="password" placeholder="Temporary Password" required onChange={handleChange} value={form.password} className="input" />
+
+                        <input name="password" type="password" placeholder="Temporary Password" required onChange={handleChange} value={form.password} className="input" autoComplete="password" />
+
                     </div>
                 </section>
 
@@ -88,9 +111,13 @@ const CreateStudent = () => {
                     <h2 className="font-semibold text-lg mb-3">Student Information</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input name="sid" placeholder="Student ID" required onChange={handleChange} value={form.sid} className="input" />
+
                         <input name="branch" placeholder="Branch" required onChange={handleChange} value={form.branch} className="input" />
+
                         <input name="guardian_name" placeholder="Guardian Name" onChange={handleChange} value={form.guardian_name} className="input" />
+
                         <input name="guardian_contact" placeholder="Guardian Contact" required onChange={handleChange} value={form.guardian_contact} className="input" />
+
                     </div>
 
                     <textarea
@@ -106,13 +133,18 @@ const CreateStudent = () => {
 
                 {/* ROOM ASSIGNMENT */}
                 <section>
-                    <h2 className="font-semibold text-lg mb-3">Room Assignment (Optional)</h2>
+                    <h2 className="font-semibold text-lg mb-3">Room Assignment</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <select name="block" onChange={handleChange} value={form.block} className="input">
                             <option value="">Select Block</option>
                             <option value="a">Block A</option>
                             <option value="b">Block B</option>
                             <option value="c">Block C</option>
+                        </select>
+                        <select name="capacity" onChange={handleChange} value={form.capacity} className="input">
+                            <option value="1">Single</option>
+                            <option value="2">Double</option>
+                            <option value="3">Triple</option>
                         </select>
 
                         <input

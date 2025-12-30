@@ -4,12 +4,14 @@ import ProfileAvatar from "../profile/ProfileAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { removeLoggedinUser } from "../../utils/store/logedinUser";
 import { authService } from "../../services/apiService";
+import { removeAnnouncement } from "../../utils/store/announcementsSlice";
 
 const Topbar = ({ user }) => {
   const dispatch = useDispatch();
   const handleLogout = async () => {
     const res = await authService.logoutUser();
     dispatch(removeLoggedinUser(null));   // clear redux state
+    dispatch(removeAnnouncement(null));   // clear redux state
     // console.log(res)                // SPA navigation
   };
 

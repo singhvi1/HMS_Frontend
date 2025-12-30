@@ -1,14 +1,17 @@
 import api from '../utils/api';
 
-// Student related APIs
 export const studentService = {
+  createUserStudent :(data) => api.post("/students/create",data),
+  createStudent:(data) =>api.post(`/students`,data),
   getAllStudents: (params) => api.get('/students', { params }),
   getStudent: (userId) => api.get(`/students/${userId}`),
   updateStudent: (userId, data) => api.patch(`/students/${userId}`, data),
   deleteStudent: (userId) => api.delete(`/students/${userId}`),
 };
+export const userService={
+  createUser:(data) =>api.post(`/users`,data)
+}
 
-// Room related APIs
 export const roomService = {
   getAllRooms: () => api.get('/rooms'),
   assignRoom: (data) => api.patch('/rooms/assign', data),
@@ -38,7 +41,7 @@ export const announcementService = {
   getAnnouncementById: (id) => api.get(`/home/announcements/${id}`),
 
   updateAnnouncement: (data, id) => api.patch(`/home/announcements/${id}`, data),
-  
+
   deleteAnnouncement: (id) => api.delete(`/home/announcements/${id}`),
 };
 

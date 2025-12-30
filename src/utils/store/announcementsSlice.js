@@ -10,12 +10,12 @@ const announcementSlice = createSlice({
   name: "announcement",
   initialState,
   reducers: {
-    /* ---------- FETCH LIST ---------- */
+
+
     setAnnouncements(state, action) {
       state.list = action.payload;
     },
 
-    /* ---------- SINGLE ANNOUNCEMENT ---------- */
     setSelectedAnnouncement(state, action) {
       state.selected = action.payload;
     },

@@ -54,7 +54,7 @@ const CreateStudent = lazy(() =>
   import("./Components/forms/CreateStudent")
 );
 const StudentList = lazy(() =>
-  import("./Components/pages/admins/studentlist/StudentList")
+  import("./Components/pages/admins/list/StudentList")
 );
 const AdminIssueList = lazy(() =>
   import("./Components/pages/admins/issues/AdminIssueList")
@@ -67,7 +67,6 @@ const AdminRoomProfile = lazy(() => import("./Components/pages/admins/rooms/Admi
 import { HostelOverview, HostelForm, EditHostel, PageLoader } from "./Components/index"
 import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
 import api from './utils/api'
-
 
 function App() {
   const user = useSelector((state) => state.loggedinUser);
@@ -83,7 +82,7 @@ function App() {
       } catch (err) {
         dispatch(removeLoggedinUser());
         console.log(err)
-      }finally {
+      } finally {
         setLoading(false)
       }
     };
@@ -91,8 +90,9 @@ function App() {
     fetchMe();
   }, []);
 
-  if(loading){
-    return <PageLoader/>
+
+  if (loading) {
+    return <PageLoader />
   }
 
 
@@ -101,11 +101,9 @@ function App() {
       <Routes>
         {user ? (
           <>
-            {/* Logged-in users */}
             <Route path="/login" element={<Navigate to="/" replace />} />
 
-            <Route
-              path="/"
+            <Route path="/"
               element={
                 <Navigate
                   to={user.role === "student" ? "/student" : "/admin"}
@@ -113,8 +111,6 @@ function App() {
                 />
               }
             />
-
-            {/* STUDENT */}
             {user.role === "student" && (
               <Route path="/student" element={<StudentDashboard />}>
                 <Route index element={<StudentHome />} />
@@ -129,11 +125,11 @@ function App() {
 
             <Route path="/" element={<Home />} />
 
-            {/* Admins */}
+
             {user.role === "admin" && (
               <Route path="/admin" element={<AdminDashBoard />}>
                 <Route index element={<AdminHome />} />
-
+                {/* <Route path="test" element={<StudentList1 />} /> */}
                 <Route path="hostel" element={<HostelOverview />} />
                 <Route path="hostel/new" element={<HostelForm />} />
                 <Route path="hostel/:id/edit" element={<EditHostel />} />
@@ -142,7 +138,6 @@ function App() {
                 <Route path="anns/new" element={<CreateAnnouncement />} />
                 <Route path="anns/:id" element={<AnnounceMentDetail announcement={announcements} />} />
                 <Route path="anns/:id/edit" element={<EditAnnouncement />} />
-
                 <Route path="students" element={<StudentList />} />
                 <Route path="students/new" element={<CreateStudent />} />
                 <Route path="students/:id" element={<AdminStudentProfile student={student} />} />
@@ -157,7 +152,7 @@ function App() {
           </>
         ) : (
           <>
-            {/* GUEST */}
+
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </>

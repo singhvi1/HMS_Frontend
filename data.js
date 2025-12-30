@@ -19,7 +19,18 @@ export const student = {
     mess_fee: "Paid"
   }
 };
-
+export const studentColumns = [
+  { key: "sid", label: "SID" },
+  { key: "full_name", label: "Name" },
+  { key: "branch", label: "Branch" },
+  { key: "year", label: "Year" },
+  { key: "block", label: "Block" },
+  { key: "room_number", label: "Room" },
+  {
+    key: "status",
+    label: "Status",
+  }
+];
 export const students = Array.from({ length: 47 }, (_, i) => ({
   _id: `st_${i + 1}`,
   sid: `HMS2024${100 + i}`,

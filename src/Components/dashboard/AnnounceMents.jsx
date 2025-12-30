@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Calendar, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../common/ui/Backbutton";
 import { categoryIconMap, categoryColorMap, formatDateTime } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { announcementService } from "../../services/apiService";
-import { setAnnouncements, setLoading, setSelectedAnnouncement } from "../../utils/store/announcementsSlice";
+import { clearSelectedAnnouncement, setAnnouncements, setLoading, setSelectedAnnouncement } from "../../utils/store/announcementsSlice";
 import { useEffect } from "react";
 
 
@@ -12,6 +13,7 @@ const AnnounceMents = () => {
     const navigate = useNavigate();
     // console.log("announcements called");
     const dispatch = useDispatch();
+    dispatch(clearSelectedAnnouncement())
     const { list, loading } = useSelector((state) => state.anns)
     // console.log(list, loading)
 

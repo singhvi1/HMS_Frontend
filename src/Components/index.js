@@ -9,7 +9,7 @@ import PageLoader from "./common/PageLoader"
 import AnnouncementForm from "./forms/AnnouncementForm"
 import CreateAnnouncement from "./pages/admins/announcements/CreateAnnouncement"
 import EditAnnouncement from "./pages/admins/announcements/EditAnnouncement"
+import StudentList from "./pages/admins/list/StudentList"
 
-
-export { QuickActionsGrid, AdminHero, HostelOverview, HostelForm, EditHostel, BackButton, Button, PageLoader, AnnouncementForm, CreateAnnouncement ,EditAnnouncement}
+export { QuickActionsGrid, AdminHero, HostelOverview, HostelForm, EditHostel, BackButton, Button, PageLoader, AnnouncementForm, CreateAnnouncement, EditAnnouncement, StudentList }
 

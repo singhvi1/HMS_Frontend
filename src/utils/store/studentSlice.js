@@ -3,6 +3,7 @@ import { students as mockStudents } from "../../../data";
 
 const initialState = {
   items: mockStudents,
+
   filters: {
     search: "",
     branch: "",
@@ -33,10 +34,10 @@ const studentsSlice = createSlice({
       state.pagination.pageSize = action.payload;
       state.pagination.page = 1;
     },
-    resetStudentsFilters: (state) => {
-      state.filters = initialState.filters;
-      state.pagination = initialState.pagination;
-    }
+    // resetStudentsFilters: (state) => {
+    //   state.filters = initialState.filters;
+    //   state.pagination = initialState.pagination;
+    // }
   }
 });
 
@@ -45,10 +46,54 @@ export const {
   setStudentsFilters,
   setStudentsPage,
   setStudentsPageSize,
-  resetStudentsFilters
+  // resetStudentsFilters
 } = studentsSlice.actions;
 
 const selectStudentsState = (state) => state.students;
+
+export const selectStudentsItems = (state) => selectStudentsState(state).items
+export const selectStudentsFilters = (state) => selectStudentsState(state).filters
+export const selectStudentsPagination = (state) => selectStudentsState(state).pagination;
+
+//filter :createSelector([reset element],(fxn to cal))
+export const selectStudentsFiltered = createSelector([selectStudentsItems, selectStudentsFilters],
+  (items, filters) => {
+    const q = filters.search.toLowerCase();
+    return items.filter((s) => {
+      if (q && !(s.full_name.toLowerCase().includes(q) ||
+        s.email.toLowerCase().includes(q) ||
+        s.sid.toLowerCase().includes(q))) return false;
+
+      if (filters.block && s.block !== filters.block) return false;
+      if (filters.status && s.status !== filters.status) return false;
+      if (filters.branch && s.branch !== filters.branch) return false;
+
+      return true;
+    })
+  })
+//pagination
+export const selectStudentPageData = createSelector(
+  [selectStudentsFiltered, selectStudentsPagination],
+  (filtered, { page, pageSize }) => {
+    //filtered is toatl student page :currPage, 
+    // pageSize :itemperpage
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+
+    return {
+      items: filtered.slice(start, end),
+      page,
+      pageSize,
+      totalPages: Math.ceil(filtered.length / pageSize)
+    };
+  }
+);
+export const selectStudentsTotalCount = createSelector(
+  [selectStudentsItems],
+  (items) => items.length
+)
+
+/*const selectStudentsState = (state) => state.students;
 export const selectStudentsItems = (state) => selectStudentsState(state).items;
 export const selectStudentsFilters = (state) => selectStudentsState(state).filters;
 export const selectStudentsPagination = (state) => selectStudentsState(state).pagination;
@@ -109,10 +154,10 @@ export const selectStudentsPageData = createSelector(
     };
   }
 );
-
 export const selectStudentsTotalCount = createSelector(
   [selectStudentsItems],
   (items) => items.length
-);
+);*/
+
 
 export default studentsSlice.reducer;

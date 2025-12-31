@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import './App.css'
 import { Routes, Route, Navigate } from "react-router-dom"
 import { lazy, Suspense, useEffect, useState } from "react";
-import { announcements, student } from '../data'
+import { announcements } from '../data'
 
 const Home = lazy(() => import("./Components/Home"));
 const Login = lazy(() => import("./Components/Login"));
@@ -56,11 +56,11 @@ const CreateStudent = lazy(() =>
 const StudentList = lazy(() =>
   import("./Components/pages/admins/list/student/StudentList")
 );
-const AdminIssueList = lazy(() =>
-  import("./Components/pages/admins/issues/AdminIssueList")
+const IssuesList = lazy(() =>
+  import("./Components/pages/admins/list/issues/IssuesList")
 );
 const RoomsList = lazy(() => import("./Components/pages/admins/list/room/RoomsList"))
-const LeavesList = lazy(() => import("./Components/pages/admins/leaves/LeavesList"))
+const LeavesList = lazy(() => import("./Components/pages/admins/list/leave/LeavesList"))
 const AdminStudentProfile = lazy(() => import("./Components/pages/admins/list/student/AdminStudentProfile"))
 const AdminRoomProfile = lazy(() => import("./Components/pages/admins/list/room/AdminRoomProfile"))
 
@@ -78,6 +78,7 @@ function App() {
 
   useEffect(() => {
     const fetchMe = async () => {
+      if (user) return;
       try {
         const res = await api.get("/users/me");
         dispatch(setLoggedinUser(res.data.user));
@@ -91,7 +92,7 @@ function App() {
     };
 
     fetchMe();
-  }, []);
+  }, [dispatch]);
 
 
   if (loading) {
@@ -149,7 +150,7 @@ function App() {
                 <Route path="rooms/new" element={<CreateRoom />} />
                 <Route path="rooms/:id" element={<AdminRoomProfile />} />
                 <Route path="rooms/:id/edit" element={<EditRoom />} />
-                <Route path="issues" element={<AdminIssueList />} />
+                <Route path="issues" element={<IssuesList />} />
                 <Route path="leaves" element={<LeavesList />} />
                 <Route path="*" element={<NotFound />} />
 

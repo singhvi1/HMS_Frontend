@@ -8,16 +8,16 @@ const Table = ({ columns = [], data = [] }) => {
                 <table className='min-w-full border border-gray-200 text-sm'>
                     <thead className="bg-gray-100">
                         <tr className="text-left">
-                            {columns.map((col) => (
+                            {columns?.map((col) => (
                                 <th key={col.key} className='px-4 py-3 border'>{col.label}</th>
                             ))}
                         </tr>
 
                     </thead>
                     <tbody>
-                        {data.map((student, indx) => (
+                        {data?.map((student, indx) => (
                             <tr key={student.id || indx} className='hover:bg-gray-50 transition border-t cursor-pointer'>
-                                {columns.map((col) => (
+                                {columns?.map((col) => (
                                     <td key={col.key} className='px-4 py-2 border'> {col.render ? col.render(student) : student[col.key]}</td>
                                 ))}
                             </tr>

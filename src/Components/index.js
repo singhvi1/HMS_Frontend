@@ -4,7 +4,7 @@ import HostelOverview from "./pages/admins/hostel/HostelOverview"
 import HostelForm from "./pages/admins/hostel/HostelForm"
 import EditHostel from "./pages/admins/hostel/EditHostel"
 import BackButton from "./common/ui/Backbutton";
-import Button from "./common/ui/button";
+import Button from "./common/ui/Button";
 import PageLoader from "./common/PageLoader"
 import AnnouncementForm from "./forms/AnnouncementForm"
 import CreateAnnouncement from "./pages/admins/announcements/CreateAnnouncement"

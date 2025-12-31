@@ -1,8 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { rooms as mockRooms } from "../../../data";
+// import { rooms as mockRooms } from "../../../data";
 
 const initialState = {
-  items: mockRooms,
+  items: [],
   filters: {
     search: "",
     block: "",
@@ -10,7 +10,8 @@ const initialState = {
   },
   pagination: {
     page: 1,
-    pageSize: 10
+    pageSize: 10,
+    totalItems: 0,
   }
 };
 
@@ -19,7 +20,8 @@ const roomsSlice = createSlice({
   initialState,
   reducers: {
     setRooms: (state, action) => {
-      state.items = action.payload;
+      state.items = action.payload.items;
+      state.pagination.totalItems = action.payload.count
     },
     setRoomsFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };

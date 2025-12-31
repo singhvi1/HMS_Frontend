@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  list: [],          // all announcements
-  selected: null,    // for edit / view
+  list: [],
+  selected: null,
   loading: false,
 };
 

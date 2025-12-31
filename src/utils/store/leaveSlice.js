@@ -8,6 +8,8 @@ const initialState = {
     branch: "",
     block: "",
     status: "",
+    from_date: "",
+    to_date: "",
   },
   pagination: {
     page: 1,
@@ -54,7 +56,13 @@ export const selectLeavesFiltered = createSelector(
   [selectLeaveItems, selectLeaveFilters],
   (items, filters) => {
     const search = filters.search.toLowerCase().trim();
+    const filterFrom = filters.fromDate
+      ? new Date(filters.fromDate).getTime()
+      : null;
 
+    const filterTo = filters.toDate
+      ? new Date(filters.toDate).getTime()
+      : null;
     return items.filter((l) => {
       const name = (l.full_name || "").toLowerCase();
       const sid = (l.sid || "").toLowerCase();
@@ -62,12 +70,15 @@ export const selectLeavesFiltered = createSelector(
       const block = (l.block || "").toLowerCase();
       const status = (l.status || "").toLowerCase();
       const room = (l.room_number || "").toLowerCase();
-
+      const destination = (l.destination || "").toLowerCase();
+      const leaveFrom = new Date(l.from_date).getTime();
+      const leaveTo = new Date(l.to_date).getTime();
       const matchesSearch =
         !search ||
         name.includes(search) ||
         sid.includes(search) ||
-        room.includes(search);
+        room.includes(search) ||
+        destination.includes(search)
 
       const matchesBranch =
         !filters.branch || branch === filters.branch.toLowerCase();
@@ -75,8 +86,12 @@ export const selectLeavesFiltered = createSelector(
         !filters.block || block === filters.block.toLowerCase();
       const matchesStatus =
         !filters.status || status === filters.status.toLowerCase();
+      const matchesFromDate =
+        !filterFrom || leaveFrom >= filterFrom;
 
-      return matchesSearch && matchesBranch && matchesBlock && matchesStatus;
+      const matchesToDate =
+        !filterTo || leaveTo <= filterTo;
+      return matchesSearch && matchesBranch && matchesBlock && matchesStatus && matchesFromDate && matchesToDate;
     });
   }
 );

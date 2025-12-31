@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import IssueFilters from "./IssueFilters";
-import IssueTable from "./IssueTable";
-import Pagination from "../studentlist/Pagination";
+import Table from "../../../common/table/Table"
+import { issueColumns } from "../../../../../MockData"
+import Pagination from "../../../common/table/Pagination";
 import {
   selectIssuesFilters,
   selectIssuesPageData,
@@ -54,18 +55,16 @@ const AdminIssueList = () => {
       </div>
 
 
-      <IssueTable
-        issues={pageData.items}
-        onView={handleView}
+      <Table
+        columns={issueColumns}
+        data={pageData.items}
       />
 
       <Pagination
-        page={pageData.page}
+        currPage={pageData.page}
         totalPages={pageData.totalPages}
-        onPrev={() => dispatch(setIssuesPage(Math.max(pageData.page - 1, 1)))}
-        onNext={() =>
-          dispatch(setIssuesPage(Math.min(pageData.page + 1, pageData.totalPages)))
-        }
+        onPageChange={(p) => dispatch(setIssuesPage(p))}
+
       />
     </div>
   );

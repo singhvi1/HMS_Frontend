@@ -1,8 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { students as mockStudents } from "../../../data";
+// import { students as mockStudents } from "../../../data";
 
 const initialState = {
-  items: mockStudents,
+  items: [],
 
   filters: {
     search: "",
@@ -13,7 +13,10 @@ const initialState = {
   },
   pagination: {
     page: 1,
-    pageSize: 10
+    pageSize: 10,
+    totalItems: 0,
+    totalPages: 1
+
   }
 };
 
@@ -22,7 +25,10 @@ const studentsSlice = createSlice({
   initialState,
   reducers: {
     setStudents: (state, action) => {
-      state.items = action.payload;
+      state.items = action.payload.items;
+      state.pagination.total = action.payload.pagination.total
+      state.pagination.totalPages = action.payload.pagination.totalPages
+      state.pagination.totalItems = action.payload.pagination.totalItems
     },
     setStudentsFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };
@@ -60,112 +66,14 @@ export const selectStudentById = (id) => (state) => state.students.items.find((s
 export const selectStudentsItems = (state) => selectStudentsState(state).items
 export const selectStudentsFilters = (state) => selectStudentsState(state).filters
 export const selectStudentsPagination = (state) => selectStudentsState(state).pagination;
+export const selectStudentsTotalCount = (state) => selectStudentsState(state).pagination.totalItems
 
-//filter :createSelector([reset element],(fxn to cal))
-export const selectStudentsFiltered = createSelector([selectStudentsItems, selectStudentsFilters],
-  (items, filters) => {
-    const q = (filters?.search || "").toLowerCase();
-    
-    return items.filter((s) => {
-      if (q && !(s.full_name.toLowerCase().includes(q) ||
-        s.email.toLowerCase().includes(q) ||
-        s.room_number.toLowerCase().includes(q) ||
-        s.sid.toLowerCase().includes(q))) return false;
 
-      if (filters.block && s.block !== filters.block) return false;
-      if (filters.status && s.status !== filters.status) return false;
-      if (filters.branch && s.branch !== filters.branch) return false;
-
-      return true;
-    })
-  })
-//pagination
-export const selectStudentPageData = createSelector(
-  [selectStudentsFiltered, selectStudentsPagination],
-  (filtered, { page, pageSize }) => {
-    //filtered is toatl student page :currPage, 
-    // pageSize :itemperpage
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
-
-    return {
-      items: filtered.slice(start, end),
-      page,
-      pageSize,
-      totalPages: Math.ceil(filtered.length / pageSize)
-    };
-  }
-);
-export const selectStudentsTotalCount = createSelector(
-  [selectStudentsItems],
-  (items) => items.length
-)
-
-/*const selectStudentsState = (state) => state.students;
-export const selectStudentsItems = (state) => selectStudentsState(state).items;
-export const selectStudentsFilters = (state) => selectStudentsState(state).filters;
-export const selectStudentsPagination = (state) => selectStudentsState(state).pagination;
-
-export const selectStudentsFiltered = createSelector(
-  [selectStudentsItems, selectStudentsFilters],
-  (items, filters) => {
-    const search = filters.search.trim().toLowerCase();
-    return items.filter((s) => {
-      const name = (s.name || s.user_id?.full_name || "").toLowerCase();
-      const sid = (s.sid || "").toLowerCase();
-      const email = (s.user_id?.email || "").toLowerCase();
-      const branch = (s.branch || "").toLowerCase();
-      const block = (s.block || "").toLowerCase();
-      const status = (s.status || s.user_id?.status || "").toLowerCase();
-      const room = (s.room || "").toLowerCase();
-      const roomNumber =
-        s.room_number === undefined || s.room_number === null
-          ? ""
-          : String(s.room_number).toLowerCase();
-
-      const matchesSearch =
-        !search ||
-        name.includes(search) ||
-        sid.includes(search) ||
-        email.includes(search) ||
-        branch.includes(search) ||
-        room.includes(search) ||
-        roomNumber.includes(search);
-
-      const matchesBranch =
-        !filters.branch || branch === filters.branch.toLowerCase();
-      const matchesBlock =
-        !filters.block || block === filters.block.toLowerCase();
-      const matchesStatus =
-        !filters.status || status === filters.status.toLowerCase();
-
-      return matchesSearch && matchesBranch && matchesBlock && matchesStatus;
-    });
-  }
-);
-
-export const selectStudentsPageData = createSelector(
-  [selectStudentsFiltered, selectStudentsPagination],
-  (filtered, pagination) => {
-    const total = filtered.length;
-    const pageSize = pagination.pageSize;
-    const totalPages = Math.max(1, Math.ceil(total / pageSize));
-    const page = Math.min(Math.max(1, pagination.page), totalPages);
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
-    return {
-      page,
-      pageSize,
-      total,
-      totalPages,
-      items: filtered.slice(start, end)
-    };
-  }
-);
-export const selectStudentsTotalCount = createSelector(
-  [selectStudentsItems],
-  (items) => items.length
-);*/
-
+export const selectStudentPageData = createSelector([selectStudentsItems, selectStudentsPagination], (items, pagination) => ({
+  items,
+  page: pagination.page,
+  pageSize: pagination.pageSize,
+  totalPages: pagination.totalPages,
+}))
 
 export default studentsSlice.reducer;

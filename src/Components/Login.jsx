@@ -1,10 +1,9 @@
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-import Navbar from "../Components/layout/NavBar"; // adjust path if needed
+import Navbar from "../Components/layout/NavBar";
 import { useDispatch } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
 import { authService } from "../services/apiService";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");

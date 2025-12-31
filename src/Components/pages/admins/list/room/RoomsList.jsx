@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { selectRoomsFilters, selectRoomsPageData, setRoomsFilters, setRoomsPage, setRoomsPageSize } from "../../../../../utils/store/roomsSlice";
+import { selectRoomsFilters, selectRoomsPageData, setRooms, setRoomsFilters, setRoomsPage, setRoomsPageSize } from "../../../../../utils/store/roomsSlice";
 import { useNavigate } from "react-router-dom";
 import Table from "../../../../common/table/Table";
 import Pagination from "../../../../common/table/Pagination";
 import { roomColumns } from "../../../../../../MockData";
-import { rooms } from "../../../../../../data";
 import Button from "../../../../common/ui/Button";
 import BackButton from "../../../../common/ui/Backbutton";
+import { roomService } from "../../../../../services/apiService";
+import { useEffect } from "react";
 
 const RoomsList = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,23 @@ const RoomsList = () => {
     const filters = useSelector(selectRoomsFilters);
     const pageData = useSelector(selectRoomsPageData);
 
+    const fetchRoomList = async () => {
+        try {
+            const res = await roomService.getAllRooms()
+            console.log(res.data.data)
+            console.log(res.data.count)
+            dispatch(setRooms({
+                items: res.data.data,
+                count: res.data.count
+            }))
+        } catch (error) {
+            console.log("Not able to fetch roomList form db", error)
+        }
+    }
+
+    useEffect(() => {
+        fetchRoomList();
+    }, [])
     return (
         <div className="bg-white rounded-xl shadow p-6">
             <BackButton />

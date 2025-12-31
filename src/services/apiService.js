@@ -17,7 +17,7 @@ export const announcementService = {
 export const studentService = {
   createUserStudent: (data) => api.post("/students/create", data),
   createStudent: (data) => api.post(`/students`, data),
-  getAllStudents: (params) => api.get('/students', { params }),
+  getAllStudents: (params) => api.get('/students/getall', { params }),
   getStudentById: (userId) => api.get(`/students/profile/${userId}`),
   updateStudent: (userId, data) => api.patch(`/students/${userId}`, data),
   deleteStudent: (userId) => api.delete(`/students/${userId}`),
@@ -27,12 +27,12 @@ export const userService = {
 }
 
 export const roomService = {
-  createRoom:(data) =>api.post(`/admin/rooms`,data),
-  getAllRooms: () => api.get('/rooms'),
+  createRoom: (data) => api.post(`/admin/rooms`, data),
+  getAllRooms: () => api.get('/admin/rooms'),
   assignRoom: (data) => api.patch('/rooms/assign', data),
   vacateRoom: (data) => api.patch('/rooms/vacate', data),
-  toggleRoomStatus:(status)=> api.patch(`/admin/rooms/${status}`),
-  getRoomById:(id)=>api.get(`/admin/rooms/${id}`)
+  toggleRoomStatus: (status) => api.patch(`/admin/rooms/${status}`),
+  getRoomById: (id) => api.get(`/admin/rooms/${id}`)
 };
 
 // Maintenance/Issue related APIs

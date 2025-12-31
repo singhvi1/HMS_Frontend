@@ -6,7 +6,8 @@ const initialState = {
   filters: {
     search: "",
     status: "",
-    priority: ""
+    priority: "",
+    block: "",
   },
   pagination: {
     page: 1,
@@ -63,18 +64,21 @@ export const selectIssuesFiltered = createSelector(
       const studentName = (issue.student_name || "").toLowerCase();
       const status = (issue.status || "").toLowerCase();
       const priority = (issue.priority || "").toLowerCase();
-
+      const block = (issue.block || "").toLowerCase();
+      const category = (issue.category || "").toLowerCase();
       const matchesSearch =
         !search ||
         title.includes(search) ||
         description.includes(search) ||
         issueId.includes(search) ||
-        studentName.includes(search);
+        studentName.includes(search) ||
+        category.includes(search);
 
       const matchesStatus = !filters.status || status === filters.status.toLowerCase();
+      const matchesBlock = !filters.block || block === filters.block.toLowerCase();
       const matchesPriority = !filters.priority || priority === filters.priority.toLowerCase();
 
-      return matchesSearch && matchesStatus && matchesPriority;
+      return matchesSearch && matchesStatus && matchesPriority && matchesBlock;
     });
   }
 );

@@ -4,7 +4,7 @@ import { BackButton } from "./index";
 const NotFound = () => {
   return (
     // 1. Added 'relative' here so the absolute child positions itself inside this box
-    <div className="min-h-screen relative flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 px-4 text-center">
+    <div className="min-h-screen relative flex flex-col items-center justify-center bg-linear-to-b from-gray-50 to-gray-200 px-4 text-center">
 
       {/* 2. Positioned the BackButton at the top-left */}
       <div className="absolute top-5 left-5">

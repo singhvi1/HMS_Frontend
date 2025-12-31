@@ -96,7 +96,7 @@ export const roomColumns = (navigate, dispatch) => [
                             title="Add Student"
                             className="p-2 rounded hover:bg-green-100"
                             onClick={() =>
-                                navigate(`/admin/students/new?roomId=${room._id}`)
+                                navigate(`/admin/students/new?roomId=${room._id}`, { state: { room } })
                             }
                         >
                             <UserPlus size={18} className="text-green-600" />

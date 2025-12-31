@@ -31,7 +31,7 @@ const RoomsList = () => {
                     </Button>
                     <Button
                         variant="danger"
-                        onClick={() => navigate("/admin/rooms/create")}
+                        onClick={() => navigate("/admin/rooms/new")}
                         className='p-2 cursor-pointer'
                     >
                         + Add Room

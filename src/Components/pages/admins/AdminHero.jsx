@@ -4,8 +4,6 @@ import QuickInfo from "./QuickInfo";
 const AdminHero = ({ admin }) => {
   return (
     <div className="bg-white rounded-xl shadow p-6 mb-8">
-
-      {/* Header */}
       <div className="text-center mb-6">
         <h1 className="text-3xl font-extrabold text-gray-800">
           {admin.hostel_name}
@@ -17,7 +15,7 @@ const AdminHero = ({ admin }) => {
 
       {/* Admin Row */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        
+
         {/* Admin Info */}
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center">
@@ -29,7 +27,10 @@ const AdminHero = ({ admin }) => {
               Welcome, {admin.full_name}
             </h2>
             <p className="text-sm text-gray-500">
-              Administrator • {admin.email}
+              Administrator : {admin.email}
+            </p>
+            <p className="text-sm text-gray-500">
+              MobileNo : +91{admin.phone}
             </p>
           </div>
         </div>

@@ -62,12 +62,14 @@ const AdminIssueList = lazy(() =>
 const RoomsList = lazy(() => import("./Components/pages/admins/list/room/RoomsList"))
 const LeavesList = lazy(() => import("./Components/pages/admins/leaves/LeavesList"))
 const AdminStudentProfile = lazy(() => import("./Components/pages/admins/list/student/AdminStudentProfile"))
-const AdminRoomProfile = lazy(() => import("./Components/pages/admins/rooms/AdminRoomProfile"))
+const AdminRoomProfile = lazy(() => import("./Components/pages/admins/list/room/AdminRoomProfile"))
 
 import { HostelOverview, HostelForm, EditHostel, PageLoader } from "./Components/index"
 import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
 import api from './utils/api'
 import EditStudent from "./Components/pages/admins/list/student/EditStudent";
+import CreateRoom from "./Components/forms/CreateRoom";
+import EditRoom from "./Components/pages/admins/list/room/EditRoom";
 
 function App() {
   const user = useSelector((state) => state.loggedinUser);
@@ -144,7 +146,9 @@ function App() {
                 <Route path="students/:id" element={<AdminStudentProfile />} />
                 <Route path="students/:id/edit" element={<EditStudent />} />
                 <Route path="rooms" element={<RoomsList />} />
+                <Route path="rooms/new" element={<CreateRoom />} />
                 <Route path="rooms/:id" element={<AdminRoomProfile />} />
+                <Route path="rooms/:id/edit" element={<EditRoom />} />
                 <Route path="issues" element={<AdminIssueList />} />
                 <Route path="leaves" element={<LeavesList />} />
                 <Route path="*" element={<NotFound />} />

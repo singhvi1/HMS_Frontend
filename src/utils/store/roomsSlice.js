@@ -48,7 +48,7 @@ export const {
 } = roomsSlice.actions;
 
 const selectRoomState = (state) => state.rooms;
-
+export const selectRoomById = (id) => (state) => state.rooms.items.find((r) => r._id === id);
 export const selectRoomsItems = (state) => selectRoomState(state).items
 export const selectRoomsFilters = (state) => selectRoomState(state).filters
 export const selectRoomsPagination = (state) => selectRoomState(state).pagination

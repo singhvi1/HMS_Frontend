@@ -6,7 +6,7 @@ const QuickActionsGrid = ({ title = "Quick Actions", actions = [] }) => {
     <div className="bg-white rounded-xl shadow p-6">
       <h2 className="text-xl font-bold mb-6">{title}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
         {actions.map((action, index) => {
           const Icon = action.icon;
 

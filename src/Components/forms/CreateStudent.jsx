@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { BackButton } from "../index"
-import { studentService } from "../../services/apiService";
+import { roomService, studentService } from "../../services/apiService";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectStudentById } from "../../utils/store/studentSlice";
+import { selectRoomById } from "../../utils/store/roomsSlice";
 
 const CreateStudent = ({ studentId }) => {
     const isEdit = Boolean(studentId);
-
     const navigate = useNavigate()
     const [form, setForm] = useState({
         full_name: "",
@@ -24,13 +24,61 @@ const CreateStudent = ({ studentId }) => {
 
         block: "",
         room_number: "",
-        capacity: ""
+        capacity: "1",
+        floor: "",
+        yearly_rent: 7500,
     });
+    const { state } = useLocation()
+    const room = state?.room;
+    const [searchParams] = useSearchParams()
+    const roomId = searchParams.get("roomId")
+    const roomByStore = useSelector(selectRoomById(roomId))
+
+
+    useEffect(() => {
+        if (isEdit) return;
+        const fetchRoomById = async (id) => {
+            try {
+                const res = await roomService.getRoomById(id)
+                const room = res.data.room
+                setForm(prev => ({
+                    ...prev,
+                    block: room.block,
+                    room_number: room.room_number,
+                    capacity: room.capacity,
+                }));
+            } catch (err) {
+                console.log(err, "fetching error roomId")
+            }
+        }
+        if (state?.room) {
+            setForm(prev => ({
+                ...prev,
+                block: state.room.block,
+                room_number: state.room.room_number,
+                capacity: state.room.capacity,
+            }));
+            return;
+        }
+        if (roomByStore) {
+            setForm(prev => ({
+                ...prev,
+                block: roomByStore.block,
+                room_number: roomByStore.room_number,
+                capacity: roomByStore.capacity
+            }));
+            return;
+        }
+        if (roomId) {
+            fetchRoomById(roomId);
+        }
+    }, [isEdit, room, roomByStore, roomId]);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const studentFromStore = useSelector(selectStudentById(studentId))
     console.log(studentFromStore)
+
     useEffect(() => {
         if (!isEdit) return;
         if (studentFromStore) {
@@ -76,6 +124,20 @@ const CreateStudent = ({ studentId }) => {
         fetchStudent()
 
     }, [isEdit, studentId, studentFromStore])
+    useEffect(() => {
+        if (form.room_number) {
+            setForm(prev => ({
+                ...prev,
+                floor: Math.floor(Number(form.room_number) / 100),
+            }));
+        } else {
+            setForm(prev => ({
+                ...prev,
+                floor: "",
+            }));
+        }
+    }, [form.room_number]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
@@ -106,8 +168,10 @@ const CreateStudent = ({ studentId }) => {
                     guardian_name: form.guardian_name,
                     guardian_contact: form.guardian_contact,
                     block: form.block,
-                    room_number: form.room_number,
-                    capacity: form.capacity,
+                    room_number: Number(form.room_number),
+                    capacity: Number(form.capacity),
+                    floor: form.floor,
+                    yearly_rent: Number(form.yearly_rent)
                 };
                 const res = await studentService.createUserStudent(payload)
                 console.log(payload);
@@ -130,6 +194,8 @@ const CreateStudent = ({ studentId }) => {
                 block: "",
                 room_number: "",
                 capacity: "",
+                yearly_rent: "",
+                floor: ""
             });
             navigate('/admin/students')
         } catch (err) {
@@ -207,7 +273,6 @@ const CreateStudent = ({ studentId }) => {
                             <option value="2">Double</option>
                             <option value="3">Triple</option>
                         </select>
-
                         <input
                             name="room_number"
                             placeholder="Room Number"
@@ -216,6 +281,23 @@ const CreateStudent = ({ studentId }) => {
                             value={form.room_number}
                             className="input"
                         />
+                        <input
+                            name="floor"
+                            placeholder="floor"
+                            type="number"
+                            onChange={handleChange}
+                            value={form.floor}
+                            className="input"
+                        />
+                        <input
+                            name="yearly_rent"
+                            placeholder="Yearly-Rent"
+                            type="number"
+                            onChange={handleChange}
+                            value={form.yearly_rent}
+                            className="input"
+                        />
+
                     </div>
                 </section>
 

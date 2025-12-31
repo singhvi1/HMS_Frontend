@@ -27,10 +27,12 @@ export const userService = {
 }
 
 export const roomService = {
+  createRoom:(data) =>api.post(`/admin/rooms`,data),
   getAllRooms: () => api.get('/rooms'),
   assignRoom: (data) => api.patch('/rooms/assign', data),
   vacateRoom: (data) => api.patch('/rooms/vacate', data),
   toggleRoomStatus:(status)=> api.patch(`/admin/rooms/${status}`),
+  getRoomById:(id)=>api.get(`/admin/rooms/${id}`)
 };
 
 // Maintenance/Issue related APIs

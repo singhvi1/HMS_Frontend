@@ -58,7 +58,7 @@ import { Pencil, Trash2, UserX, AlertTriangle, Settings, UserPlus, Power, PowerO
 
 export const getRoomActions = ({ room }) => {
     const isFull = room?.occupancy >= room?.capacity;
-    console.log(isFull)
+    // console.log(isFull)
     return [
         {
             title: "Add New Student",

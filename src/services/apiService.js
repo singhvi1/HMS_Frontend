@@ -37,9 +37,8 @@ export const roomService = {
 
 };
 
-// Maintenance/Issue related APIs
 export const issueService = {
-  getAllIssues: () => api.get('/issues'),
+  getAllIssues: (params) => api.get('/issues', { params }),
   getIssue: (id) => api.get(`/issues/${id}`),
   updateIssueStatus: (id, status) => api.patch(`/issues/${id}/status`, { status }),
   deleteIssue: (id) => api.delete(`/issues/${id}`),

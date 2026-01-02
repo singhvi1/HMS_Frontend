@@ -1,6 +1,6 @@
 import { Eye, Pencil, Power, PowerOff, Trash2, UserPlus, Check, X } from "lucide-react";
 
-export const studentColumns = (navigate) => [   
+export const studentColumns = (navigate) => [
     { key: "sid", label: "SID" },
     {
         key: "full_name", label: "Name",
@@ -176,7 +176,12 @@ export const roomColumns = (navigate) => [
 
 
 export const issueColumns = (navigate) => [
-    { key: "issue_id", label: "Issue ID" },
+    {
+        key: "sid", label: "SID",
+        render: (row) => (
+            <span>{row?.raised_by?.sid}</span>
+        )
+    },
     {
         key: "student_name", label: "Student",
         render: (row) => (
@@ -184,30 +189,19 @@ export const issueColumns = (navigate) => [
                 className="cursor-pointer hover:underline hover:text-blue-500"
                 onClick={() => navigate(`/admin/issues/${row._id}`)}
             >
-                {row.student_name}
+                {row?.raised_by?.user_id?.full_name}
             </span>
         )
     },
     { key: "title", label: "Title", },
     { key: "category", label: "Category" },
-    // { key: "block", label: "Block" },
-    { key: "room", label: "Room" },
-
     {
-        key: "priority",
-        label: "Priority",
+        key: "room", label: "Room",
         render: (row) => (
-            <span
-                className={`px-2 py-0.5 rounded text-xs font-medium
-          ${row.priority === "high" && "bg-red-100 text-red-700"}
-          ${row.priority === "medium" && "bg-yellow-100 text-yellow-700"}
-          ${row.priority === "low" && "bg-green-100 text-green-700"}
-        `}
-            >
-                {row.priority}
-            </span>
+            <span>{((row?.raised_by?.room_id?.block)||"").toUpperCase()} - {row?.raised_by?.room_id?.room_number}</span>
         )
     },
+
 
     {
         key: "status",

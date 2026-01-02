@@ -19,8 +19,7 @@ const RoomsList = () => {
     const fetchRoomList = async () => {
         try {
             const res = await roomService.getAllRooms()
-            // console.log(res.data.data)
-            // console.log(res.data.count)
+
             dispatch(setRooms({
                 items: res.data.data,
                 count: res.data.count
@@ -59,7 +58,7 @@ const RoomsList = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-                <SearchBar search={filters.search} onChange={(v) => dispatch(setRoomsFilters({ search: v }))} placeholder={"Search name"} />
+                <SearchBar search={filters.search} onChange={(v) => dispatch(setRoomsFilters({ search: v }))} placeholder={"Search Room"} />
 
                 <select
                     className="input"

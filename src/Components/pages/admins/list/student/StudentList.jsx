@@ -4,7 +4,7 @@ import SearchBar from '../../../../common/table/SearchBar'
 import Pagination from '../../../../common/table/Pagination'
 import { studentColumns } from '../../../../../../MockData'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectStudentPageData, selectStudentsFilters, setStudents, setStudentsFilters, setStudentsPage, setStudentsPageSize } from '../../../../../utils/store/studentSlice'
+import { selectStudentPageData, selectStudentsFilters, selectStudentsItems, selectStudentsPagination, setStudents, setStudentsFilters, setStudentsPage, setStudentsPageSize } from '../../../../../utils/store/studentSlice'
 import Button from '../../../../common/ui/Button'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../../../../common/ui/Backbutton'
@@ -15,7 +15,9 @@ const StudentList = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const filters = useSelector(selectStudentsFilters);
-    const pageData = useSelector(selectStudentPageData);
+    const pageData = useSelector(selectStudentsPagination);
+    const students = useSelector(selectStudentsItems);
+
 
     const fetchData = async () => {
         try {
@@ -27,18 +29,7 @@ const StudentList = () => {
                 search: filters.search,
                 status: filters.status,
             })
-            // console.log(res.data)
-            // console.log("total Pages", res.data.pagination.total)
-            dispatch(setStudents({
-                items: res.data.students,
-                pagination: {
-                    page: res.data.pagination.page,
-                    pageSize: res.data.pagination.limit,
-                    totalItems: res.data.pagination.total,
-                    totalPages: res.data.pagination.pages,
-                }
-
-            }))
+            dispatch(setStudents(res.data))
 
         } catch (error) {
             console.log("dont able to find student", error)
@@ -46,8 +37,8 @@ const StudentList = () => {
     }
 
     useEffect(() => { fetchData() },
-        [filters.search, filters.block, filters.branch, filters.status, pageData.page, pageData.pageSize])
-        
+        [filters.search, filters.block, filters.branch, filters.status, pageData.page, pageData.pageSize, pageData.totalPages, pageData.totalItems])
+
     return (
         <>
             <div className="bg-white rounded-xl shadow p-6">
@@ -67,6 +58,7 @@ const StudentList = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                     <SearchBar search={filters.search} onChange={(v) => dispatch(setStudentsFilters({ search: v }))} placeholder={"Search name, sid, RoomNo"} />
+                    
                     <select
                         className="input"
                         value={filters.block}
@@ -114,10 +106,12 @@ const StudentList = () => {
                     </select>
                 </div>
                 <Table columns={studentColumns(navigate)}
-                    data={pageData.items} />
+                    data={students} />
 
-                <Pagination currPage={pageData.page}
-                    totalPages={pageData.totalPages} onPageChange={(p) => dispatch(setStudentsPage(p))} />
+                <Pagination
+                    currPage={pageData.page}
+                    totalPages={pageData.totalPages}
+                    onPageChange={(p) => dispatch(setStudentsPage(p))} />
             </div>
         </>
     )

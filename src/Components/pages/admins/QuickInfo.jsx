@@ -3,13 +3,12 @@ import { ShieldCheck, Users, BedDouble, AlertTriangle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { selectStudentsTotalCount } from "../../../utils/store/studentSlice";
 import { selectRoomsTotalCount, selectRoomsActiveCount } from "../../../utils/store/roomsSlice";
-import { selectIssuesPendingCount } from "../../../utils/store/issuesSlice";
-const QuickInfo = ({admin}) => {
-    // console.log("quickInfoAdmin",admin)
+import { selectIssuesTotalCount } from "../../../utils/store/issuesSlice";
+const QuickInfo = () => {
     const totalStudents = useSelector(selectStudentsTotalCount);
     const totalRooms = useSelector(selectRoomsTotalCount);
     const activeRooms = useSelector(selectRoomsActiveCount);
-    const pendingIssues = useSelector(selectIssuesPendingCount);
+    const pendingIssues = useSelector(selectIssuesTotalCount);
     return (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <StatCard

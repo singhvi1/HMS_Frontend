@@ -14,9 +14,8 @@ const initialState = {
   pagination: {
     page: 1,
     pageSize: 10,
+    totalPages: 1,
     totalItems: 0,
-    totalPages: 1
-
   }
 };
 
@@ -25,10 +24,9 @@ const studentsSlice = createSlice({
   initialState,
   reducers: {
     setStudents: (state, action) => {
-      state.items = action.payload.items;
-      state.pagination.total = action.payload.pagination.total
-      state.pagination.totalPages = action.payload.pagination.totalPages
-      state.pagination.totalItems = action.payload.pagination.totalItems
+      state.items = action.payload.students;
+      state.pagination.totalPages = action.payload.pagination.pages
+      state.pagination.totalItems = action.payload.pagination.total
     },
     setStudent: (state, action) => {
       const student = action.payload;

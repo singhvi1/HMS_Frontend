@@ -1,7 +1,7 @@
 import { Bell, Megaphone } from 'lucide-react';
 import Topbar from './layout/Topbar.jsx';
 import Navbar from './layout/Navbar.jsx';
-import Announcements from './dashboard/Announcements.jsx';
+import Announcements from './dashboard/AnnounceMents.jsx';
 import { useSelector } from 'react-redux';
 
 const Home = () => {

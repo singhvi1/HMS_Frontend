@@ -30,7 +30,7 @@ const LeaveForm = lazy(() =>
 );
 
 const Announcements = lazy(() =>
-  import("./components/dashboard/Announcements.jsx")
+  import("./components/dashboard/AnnounceMents.jsx")
 );
 
 const NotFound = lazy(() =>
@@ -44,7 +44,7 @@ const CreateAnnouncement = lazy(() =>
   import("./components/pages/admins/announcements/CreateAnnouncement.jsx")
 );
 const AnnounceMentDetail = lazy(() =>
-  import("./components/dashboard/AnnouncementDetail.jsx")
+  import("./components/dashboard/AnnounceMentDetail.jsx")
 );
 
 const EditAnnouncement = lazy(() =>

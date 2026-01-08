@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "../../layout/NavBar";
+import Navbar from "../../layout/Navbar";
 import SideBar from "../../layout/SideBar";
 import { student } from "../../../../data";
 import Topbar from "../../layout/Topbar";

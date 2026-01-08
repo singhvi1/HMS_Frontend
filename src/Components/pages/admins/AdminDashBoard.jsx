@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Topbar from '../../layout/Topbar'
-import Navbar from '../../layout/NavBar';
+import Navbar from '../../layout/Navbar';
 import SideBar from '../../layout/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';

@@ -1,7 +1,7 @@
 import { Bell, Megaphone } from 'lucide-react';
-import Topbar from './layout/Topbar';
-import Navbar from './layout/NavBar';
-import AnnounceMents from './dashboard/AnnounceMents';
+import Topbar from './layout/Topbar.jsx';
+import Navbar from './layout/Navbar.jsx';
+import AnnounceMents from './dashboard/Announcements.jsx';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
@@ -13,17 +13,7 @@ const Home = () => {
       <Navbar />
       <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 py-16 px-4">
         <div className="container mx-auto px-4">
-
-          {/* Welcome Banner */}
-          {/* <div className="bg-linear-to-r from-indigo-600 to-blue-500 rounded-xl shadow-lg mb-8 p-8 text-white">
-
-            <h1 className="text-2xl md:text-4xl font-bold mb-2">Welcome to HMS</h1>
-            <p className="text-indigo-100">Your one-stop solution for hostel management</p>
-          </div> */}
-
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Announcements */}
 
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-white rounded-xl shadow-lg p-6 backdrop-blur-lg bg-opacity-90">

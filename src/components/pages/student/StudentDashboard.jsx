@@ -5,7 +5,7 @@ import { student } from "../../../../data";
 import Topbar from "../../layout/Topbar";
 import { Outlet } from "react-router-dom";
 
-const StudentDashboard = () => {
+const StudentDashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gray-100">
@@ -30,4 +30,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard;
+export default StudentDashBoard;

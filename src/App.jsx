@@ -7,10 +7,10 @@ const Home = lazy(() => import("./components/Home.jsx"));
 const Login = lazy(() => import("./components/Login.jsx"));
 const AdminDashBoard = lazy(() =>
   import("./components/pages/admins/AdminDashBoard.jsx")
-);
+)
 
-const StudentDashboard = lazy(() =>
-  import("./components/pages/student/StudentDashBoard.jsx")
+const StudentDashBoard = lazy(() =>
+  import("./components/pages/student/StudentDashboard.jsx")
 );
 
 const StudentHome = lazy(() =>
@@ -125,7 +125,7 @@ function App() {
 
 
             {user.role === "student" && (
-              <Route path="/student" element={<StudentDashboard />}>
+              <Route path="/student" element={<StudentDashBoard />}>
                 <Route index element={<StudentHome />} />
                 <Route path="leave/new" element={<LeaveForm />} />
                 <Route path="issues" element={<MaintenanceList />} />

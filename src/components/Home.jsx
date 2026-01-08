@@ -1,7 +1,7 @@
 import { Bell, Megaphone } from 'lucide-react';
 import Topbar from './layout/Topbar.jsx';
-import Navbar from './layout/Navbar.jsx';
-import Announcements from './dashboard/AnnounceMents.jsx';
+import NavBar from './layout/NavBar.jsx';
+import Announcements from './dashboard/Announcements.jsx';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <Topbar user={loogedinUser} />
       {/* <Topbar user={loogedinUser} /> */}
-      <Navbar />
+      <NavBar />
       <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 py-16 px-4">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Topbar from '../../layout/Topbar'
-import Navbar from '../../layout/Navbar';
+import NavBar from '../../layout/NavBar';
 import SideBar from '../../layout/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ const AdminDashBoard = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/*ye mobie ke liye  */}
-      <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
+      <NavBar onMenuClick={() => setIsSidebarOpen(true)} />
 
       {/* Desktop TopBar */}
       <Topbar user={loggedinUser} />

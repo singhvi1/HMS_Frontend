@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../customHooks/useLogout";
 
-const Navbar = ({ onMenuClick }) => {
+const NavBar = ({ onMenuClick }) => {
   const user = useSelector((state) => state.loggedinUser);
   const logout = useLogout();
 
@@ -50,4 +50,4 @@ const Navbar = ({ onMenuClick }) => {
   );
 };
 
-export default Navbar
+export default NavBar

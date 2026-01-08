@@ -1,6 +1,6 @@
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-import Navbar from "./layout/Navbar";
+import NavBar from "./layout/NavBar";
 import { useDispatch } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
 import { authService } from "../services/apiService";
@@ -29,7 +29,7 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
 

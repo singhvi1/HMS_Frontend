@@ -3,77 +3,77 @@ import './App.css'
 import { Routes, Route, Navigate } from "react-router-dom"
 import { lazy, Suspense, useEffect, useState } from "react";
 
-const Home = lazy(() => import("./Components/Home"));
-const Login = lazy(() => import("./Components/Login"));
+const Home = lazy(() => import("./components/Home.jsx"));
+const Login = lazy(() => import("./components/Login.jsx"));
 const AdminDashBoard = lazy(() =>
-  import("./Components/pages/admins/AdminDashBoard")
+  import("./components/pages/admins/AdminDashBoard.jsx")
 );
 
 const StudentDashboard = lazy(() =>
-  import("./Components/pages/student/StudentDashBoard")
+  import("./components/pages/student/StudentDashBoard.jsx")
 );
 
 const StudentHome = lazy(() =>
-  import("./Components/pages/student/StudentHome")
+  import("./components/pages/student/StudentHome.jsx")
 );
 
 const MaintenanceList = lazy(() =>
-  import("./Components/pages/student/MaintenanceList")
+  import("./components/pages/student/MaintenanceList.jsx")
 );
 
 const MaintenanceForm = lazy(() =>
-  import("./Components/forms/MaintenanceForm")
+  import("./components/forms/MaintenanceForm.jsx")
 );
 
 const LeaveForm = lazy(() =>
-  import("./Components/forms/LeaveForm")
+  import("./components/forms/LeaveForm.jsx")
 );
 
 const AnnounceMents = lazy(() =>
-  import("./Components/dashboard/AnnounceMents")
+  import("./components/dashboard/AnnounceMents.jsx")
 );
 
 const NotFound = lazy(() =>
-  import("./Components/NotFound")
+  import("./components/NotFound.jsx")
 );
 
 const AdminHome = lazy(() =>
-  import("./Components/pages/admins/AdminHome")
+  import("./components/pages/admins/AdminHome.jsx")
 );
 const CreateAnnouncement = lazy(() =>
-  import("./Components/pages/admins/announcements/CreateAnnouncement")
+  import("./components/pages/admins/announcements/CreateAnnouncement.jsx")
 );
 const AnnounceMentDetail = lazy(() =>
-  import("./Components/dashboard/AnnounceMentDetail")
+  import("./components/dashboard/AnnounceMentDetail.jsx")
 );
 
 const EditAnnouncement = lazy(() =>
-  import("./Components/pages/admins/announcements/EditAnnouncement")
+  import("./components/pages/admins/announcements/EditAnnouncement.jsx")
 );
 const CreateStudent = lazy(() =>
-  import("./Components/forms/CreateStudent")
+  import("./components/forms/CreateStudent.jsx")
 );
 const StudentList = lazy(() =>
-  import("./Components/pages/admins/list/student/StudentList")
+  import("./components/pages/admins/list/student/StudentList.jsx")
 );
 const IssuesList = lazy(() =>
-  import("./Components/pages/admins/list/issues/IssuesList")
+  import("./components/pages/admins/list/issues/IssuesList.jsx")
 );
-const RoomsList = lazy(() => import("./Components/pages/admins/list/room/RoomsList"))
-const LeavesList = lazy(() => import("./Components/pages/admins/list/leave/LeavesList"))
-const AdminStudentProfile = lazy(() => import("./Components/pages/admins/list/student/AdminStudentProfile"))
-const AdminRoomProfile = lazy(() => import("./Components/pages/admins/list/room/AdminRoomProfile"))
-const EditRoom = lazy(() => import("./Components/pages/admins/list/room/EditRoom"))
-const CreateRoom = lazy(() => import("./Components/forms/CreateRoom"))
-const EditStudent = lazy(() => import("./Components/pages/admins/list/student/EditStudent"))
-const AdminIssueProfile = lazy(() => import("./Components/pages/admins/list/issues/AdminIssueProfile"));
-const PageLoader = lazy(() => import("./Components/common/PageLoader"))
+const RoomsList = lazy(() => import("./components/pages/admins/list/room/RoomsList.jsx"))
+const LeavesList = lazy(() => import("./components/pages/admins/list/leave/LeavesList.jsx"))
+const AdminStudentProfile = lazy(() => import("./components/pages/admins/list/student/AdminStudentProfile.jsx"))
+const AdminRoomProfile = lazy(() => import("./components/pages/admins/list/room/AdminRoomProfile.jsx"))
+const EditRoom = lazy(() => import("./components/pages/admins/list/room/EditRoom.jsx"))
+const CreateRoom = lazy(() => import("./components/forms/CreateRoom.jsx"))
+const EditStudent = lazy(() => import("./components/pages/admins/list/student/EditStudent.jsx"))
+const AdminIssueProfile = lazy(() => import("./components/pages/admins/list/issues/AdminIssueProfile.jsx"));
+const PageLoader = lazy(() => import("./components/common/PageLoader.jsx"))
 import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
 import { userService } from "./services/apiService";
-const List = lazy(() => import("./Components/pages/student/studentPersonalList/List"));
-const HostelOverview = lazy(() => import("./Components/pages/admins/hostel/HostelOverview"))
-const EditHostel = lazy(() => import("./Components/pages/admins/hostel/EditHostel"))
-const HostelForm = lazy(() => import("./Components/forms/HostelForm"))
+const List = lazy(() => import("./components/pages/student/studentPersonalList/List.jsx"));
+const HostelOverview = lazy(() => import("./components/pages/admins/hostel/HostelOverview.jsx"))
+const EditHostel = lazy(() => import("./components/pages/admins/hostel/EditHostel.jsx"))
+const HostelForm = lazy(() => import("./components/forms/HostelForm.jsx"))
 
 
 

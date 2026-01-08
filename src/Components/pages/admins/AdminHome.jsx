@@ -1,4 +1,4 @@
-import { admin } from "../../../../data"
+import { admin } from "../../../../data.js"
 import AdminHero from "./AdminHero.jsx"
 import QuickActionsGrid from "../../common/QuickActionGrid.jsx"
 import { adminActions } from "../../common/config.action.js"

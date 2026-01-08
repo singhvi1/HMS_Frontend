@@ -1,6 +1,6 @@
 import { Eye, Pencil, Power, PowerOff, Trash2, UserPlus, Check, X } from "lucide-react";
 import RoleGuard from "./src/services/auth.role";
-import Button from "./src/Components/common/ui/Button";
+import Button from "./src/components/common/ui/Button";
 
 export const studentColumns = (navigate, deleteStudent) => [
     { key: "sid", label: "SID" },

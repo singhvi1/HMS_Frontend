@@ -1,6 +1,6 @@
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-import Navbar from "../Components/layout/NavBar";
+import Navbar from "./layout/NavBar";
 import { useDispatch } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
 import { authService } from "../services/apiService";

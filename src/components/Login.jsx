@@ -9,7 +9,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const dispactch = useDispatch();
+  const dispatch = useDispatch();
+  const fillAdminCredentials = () => {
+    setEmail("admin@hms.com");
+    setPassword("Admin@123");
+    setError("");
+  };
+
+  const fillStudentCredentials = () => {
+    setEmail("vikram.kumar@student.hms.com");
+    setPassword("Student@123");
+    setError("");
+  };
 
   const handleSubmit = async (e) => {
     try {
@@ -17,7 +28,7 @@ const Login = () => {
       const res = await authService.loginUser(email, password);
       if (res.data.success) {
         // navigate(`/${res?.data.user.role}`);
-        dispactch(setLoggedinUser(res.data.user));
+        dispatch(setLoggedinUser(res.data.user));
       }
     } catch (err) {
       setError(
@@ -30,7 +41,35 @@ const Login = () => {
   return (
     <>
       <NavBar />
+      {(
+          <div className="mt-6 space-y-2 text-center">
+            <p className="text-sm text-gray-600">
+              Login as{" "}
+              <span
+                onClick={fillAdminCredentials}
+                className="text-indigo-600 font-medium cursor-pointer hover:underline"
+              >
+                Admin
+              </span>
+            </p>
+
+            <p className="text-sm text-gray-600">
+              Login as{" "}
+              <span
+                onClick={fillStudentCredentials}
+                className="text-indigo-600 font-medium cursor-pointer hover:underline"
+              >
+                Student
+              </span>
+            </p>
+
+            <p className="text-xs text-gray-500">
+              Click a role to auto-fill credentials
+            </p>
+          </div>
+        )}
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50">
+      
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
 
           <div className="flex items-center justify-center mb-8">
@@ -80,6 +119,9 @@ const Login = () => {
             </button>
           </form>
         </div>
+        {/* Test Credentials (Demo / QA) */}
+        
+
       </div>
     </>
   );

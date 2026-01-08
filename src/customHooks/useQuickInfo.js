@@ -10,7 +10,6 @@ export const useQuickInfo = () => {
         const fetchQuickInfo = async () => {
             try {
                 const res = await dashboardService.getDashboardStats();
-                console.log(res);
                 setStats(res.data)
             } catch (err) {
                 console.log(err.message || "Not able to fetch quickInfo");

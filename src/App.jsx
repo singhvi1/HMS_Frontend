@@ -29,7 +29,7 @@ const LeaveForm = lazy(() =>
   import("./components/forms/LeaveForm.jsx")
 );
 
-const AnnounceMents = lazy(() =>
+const Announcements = lazy(() =>
   import("./components/dashboard/Announcements.jsx")
 );
 
@@ -132,7 +132,7 @@ function App() {
                 <Route path="list" element={<List />} />
                 <Route path="issues/:id" element={<AdminIssueProfile />} />
                 <Route path="issues/new" element={<MaintenanceForm />} />
-                <Route path="anns" element={<AnnounceMents />} />
+                <Route path="anns" element={<Announcements />} />
                 <Route path="anns/:id" element={<AnnounceMentDetail />} />
                 <Route path="*" element={<NotFound />} />
 
@@ -150,7 +150,7 @@ function App() {
                 <Route path="hostel/new" element={<HostelForm />} />
                 <Route path="hostel/:id/edit" element={<EditHostel />} />
 
-                <Route path="anns" element={<AnnounceMents />} />
+                <Route path="anns" element={<Announcements />} />
                 <Route path="anns/new" element={<CreateAnnouncement />} />
                 <Route path="anns/:id" element={<AnnounceMentDetail />} />
                 <Route path="anns/:id/edit" element={<EditAnnouncement />} />

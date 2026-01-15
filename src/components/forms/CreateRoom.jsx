@@ -80,9 +80,18 @@ const CreateRoom = ({ roomId }) => {
             dispatch(setRoom(res.data.data));
             toast.success("Room created Successfully")
             navigate(`/admin/rooms/${room._id}`)
-        } catch (error) {
-            console.log("Dont able to crate/Update Room", error)
-        } finally { setLoading(false) }
+        } catch (err) {
+            console.error("Failed to create/update room", err);
+
+            const message =
+                err?.response?.data?.message ||
+                err?.message ||
+                "Something went wrong. Please try again.";
+
+            setError(message);
+            toast.error(message);
+        }
+        finally { setLoading(false) }
     }
 
     const handleChange = (e) => {

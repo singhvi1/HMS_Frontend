@@ -18,7 +18,7 @@ export const useLogout = () => {
     return async () => {
         await authService.logoutUser();
         dispatch(resetAnnouncements());
-        dispatch(clearHostel());
+        // dispatch(clearHostel());
         dispatch(resetIssuesSlice());
         dispatch(resetLeaveSlice());
         dispatch(removeLoggedinUser());

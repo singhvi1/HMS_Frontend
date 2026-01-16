@@ -1,15 +1,22 @@
 import { LogIn } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./layout/NavBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
-import { authService } from "../services/apiService";
+import { authService, hostelService } from "../services/apiService";
+import Button from "./common/ui/Button";
+import { selectHostelAllotment, setHostel } from "../utils/store/hostelSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const allotment = useSelector(selectHostelAllotment)
+  console.log(allotment);
+
   const fillAdminCredentials = () => {
     setEmail("admin@hms.com");
     setPassword("Admin@123");
@@ -37,39 +44,64 @@ const Login = () => {
       );
     }
   };
+  useEffect(() => {
+    const fetchHostelStatus = async () => {
+      try {
+        const res = await hostelService.getAll();
+        const hostel = res?.data?.data?.[0];
+        if (hostel) {
+          console.log(hostel.data || "nonting")
+          dispatch(setHostel(hostel));
+        }
+      } catch (err) {
+        console.error("Failed to fetch hostel status", err);
+      }
+    };
+
+    fetchHostelStatus();
+  }, []);
 
   return (
     <>
       <NavBar />
       {(
-          <div className="mt-6 space-y-2 text-center">
-            <p className="text-sm text-gray-600">
-              Login as{" "}
-              <span
-                onClick={fillAdminCredentials}
-                className="text-indigo-600 font-medium cursor-pointer hover:underline"
-              >
-                Admin
-              </span>
-            </p>
+        <div className="mt-6 space-y-2 text-center">
+          <p className="text-sm text-gray-600">
+            Login as{" "}
+            <span
+              onClick={fillAdminCredentials}
+              className="text-indigo-600 font-medium cursor-pointer hover:underline"
+            >
+              Admin
+            </span>
+          </p>
 
-            <p className="text-sm text-gray-600">
-              Login as{" "}
-              <span
-                onClick={fillStudentCredentials}
-                className="text-indigo-600 font-medium cursor-pointer hover:underline"
-              >
-                Student
-              </span>
-            </p>
+          <p className="text-sm text-gray-600">
+            Login as{" "}
+            <span
+              onClick={fillStudentCredentials}
+              className="text-indigo-600 font-medium cursor-pointer hover:underline"
+            >
+              Student
+            </span>
+          </p>
 
-            <p className="text-xs text-gray-500">
-              Click a role to auto-fill credentials
-            </p>
-          </div>
-        )}
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50">
-      
+          <p className="text-xs text-gray-500">
+            Click a role to auto-fill credentials
+          </p>
+        </div>
+      )}
+
+      <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 flex-col">
+
+        {allotment && <div className="absolute top-4 right-4">
+          <Button
+            variant="success"
+            className="p-3"
+            onClick={() => navigate(`/allotment`)}
+          >Allotment</Button>
+        </div>}
+
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
 
           <div className="flex items-center justify-center mb-8">
@@ -111,17 +143,15 @@ const Login = () => {
               />
             </div>
 
-            <button
+            <Button
+              variant="success"
               type="submit"
-              className="w-full py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+              className="w-full py-2 rounded-md text-white"
             >
               Sign in
-            </button>
+            </Button>
           </form>
         </div>
-        {/* Test Credentials (Demo / QA) */}
-        
-
       </div>
     </>
   );

@@ -70,6 +70,7 @@ const AdminIssueProfile = lazy(() => import("./components/pages/admins/list/issu
 const PageLoader = lazy(() => import("./components/common/PageLoader.jsx"))
 import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
 import { userService } from "./services/apiService";
+const Allotment = lazy(() => import("./components/pages/admins/allotment/allotment.jsx"));
 const List = lazy(() => import("./components/pages/student/studentPersonalList/List.jsx"));
 const HostelOverview = lazy(() => import("./components/pages/admins/hostel/HostelOverview.jsx"))
 const EditHostel = lazy(() => import("./components/pages/admins/hostel/EditHostel.jsx"))
@@ -174,6 +175,7 @@ function App() {
           <>
 
             <Route path="/login" element={<Login />} />
+            <Route path="/allotment" element={<Allotment />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </>
         )}

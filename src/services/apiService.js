@@ -80,7 +80,7 @@ export const leaveService = {
 
   updateLeaveStatus: (id, status, reason) => api.patch(`/leave-requests/${id}/status`, { status, reason }),
 
-  createLeave :(data)=>api.post('/leave-requests/new' , data)
+  createLeave: (data) => api.post('/leave-requests/new', data)
 };
 
 export const paymentService = {
@@ -102,9 +102,11 @@ export const userService = {
   createUser: (data) => api.post(`/users`, data),
   getMe: () => api.get(`/users/me`)
 }
-//future : 
+
 export const hostelService = {
   create: (data) => api.post("/admin/hostel", data),
+
+  toggleAllotment: (id) => api.post(`/admin/hostel/${id}/allotment`),
 
   getAll: () => api.get("/admin/hostel"),
 

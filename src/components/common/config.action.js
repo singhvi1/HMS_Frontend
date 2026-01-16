@@ -9,7 +9,8 @@ import {
   Megaphone,
   UserPlus,
   HousePlus,
-  Trash2
+  Trash2,
+  DoorOpen
 } from "lucide-react";
 
 export const studentActions = [
@@ -27,7 +28,7 @@ export const studentActions = [
     color: "bg-purple-100",
     to: "/student/leave/new"
   },
-  
+
   {
     title: "Payments",
     description: "Pay fees and dues",
@@ -49,44 +50,44 @@ export const adminActions = [
     title: "Hostel",
     icon: Building2,
     description: "Create or edit hostels",
-    color: "bg-yellow-50",
+    color: "bg-yellow-100",
     to: "/admin/hostel"
   },
   {
     title: "Announcements",
     description: "Create New Announcement",
     icon: Megaphone,
-    color: "bg-orange-50",
+    color: "bg-orange-100",
     to: "/admin/anns/new"
   },
   {
     title: "New Student",
     description: "Add a Student",
     icon: UserPlus,
-    color: "bg-indigo-50",
+    color: "bg-indigo-100",
     to: "/admin/students/new"
   },
   {
     title: "New Room",
     description: "Add a Room",
     icon: HousePlus,
-    color: "bg-teal-50",
+    color: "bg-teal-100",
     to: "/admin/rooms/new"
   },
   {
     title: "Payments",
     description: "Pay fees and dues",
     icon: CreditCard,
-    color: "bg-emerald-50",
+    color: "bg-emerald-100 ",
     to: "/student/notfound"
   },
   {
     title: "Discipline",
     description: "Provide justification",
     icon: AlertTriangle,
-    color: "bg-rose-50",
+    color: "bg-rose-100",
     to: "/student/notfound"
-  }
+  },
 ];
 
 

@@ -1,29 +1,35 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { hostelService } from "../../../../services/apiService";
 import { useNavigate } from "react-router-dom";
 import { BackButton, Button } from "../../../index";
 import { useDispatch, useSelector } from "react-redux";
-import { clearHostel, setHostel } from "../../../../utils/store/hostelSlice";
+import { clearHostel, selectAllHostelState, setError, setHostel, setLoading } from "../../../../utils/store/hostelSlice";
+import { useAllotment } from "../../../../customHooks/useAllotment";
 
 const HostelOverview = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { data: hostel, loading } = useSelector((state) => state.hostel);
+  const { data, loading } = useSelector(selectAllHostelState);
+  console.log(data)
+  const { allotment, error, allotmentLoading, toggleAllotment } = useAllotment(data?._id)
 
-  const fetchHostel = async () => {
+  const fetchHostel = useCallback(async () => {
     try {
+      dispatch(setLoading(true))
+      dispatch(setError(null))
       const res = await hostelService.getAll();
       const hostelData = res?.data?.data?.[0] || null;
       dispatch(setHostel(hostelData));
     } catch (err) {
       console.error("Failed to load hostel", err);
       dispatch(clearHostel())
+    } finally {
+      dispatch(setLoading(false))
     }
-  };
+  }, [dispatch]);
 
-  const handleDelete=async ()=>{
-    const res=await hostelService.delete(hostel._id)
+  const handleDelete = async () => {
+    const res = await hostelService.delete(data._id)
     dispatch(clearHostel());
   }
 
@@ -31,7 +37,7 @@ const HostelOverview = () => {
     if (loading) {
       fetchHostel();
     }
-  }, []);
+  }, [fetchHostel, loading]);
 
   if (loading) {
     return (
@@ -41,7 +47,7 @@ const HostelOverview = () => {
     );
   }
 
-  if (!hostel) {
+  if (!data) {
     return (
       <div className="min-h-screen flex items-start justify-center bg-gray-100 pt-16">
         <div className="p-6 bg-white rounded-xl shadow max-w-md w-full text-center">
@@ -66,19 +72,19 @@ const HostelOverview = () => {
 
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold">{hostel.name}</h1>
+            <h1 className="text-2xl font-bold">{data.name}</h1>
             <p className="text-sm text-gray-500">
-              Hostel Code: {hostel.code}
+              Hostel Code: {data.code}
             </p>
           </div>
 
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${hostel.is_active
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${data.is_active
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
               }`}
           >
-            {hostel.is_active ? "Active" : "Inactive"}
+            {data.is_active ? "Active" : "Inactive"}
           </span>
         </div>
 
@@ -86,25 +92,25 @@ const HostelOverview = () => {
           <div>
             <p className="text-gray-500">Blocks</p>
             <p className="font-medium">
-              {hostel.blocks.map(b => b.toUpperCase()).join(", ")}
+              {data.blocks.map(b => b.toUpperCase()).join(", ")}
             </p>
           </div>
           <div>
             <p className="text-gray-500">Floor Per room</p>
             <p className="font-medium">
-              {hostel.floors_per_block}
+              {data.floors_per_block}
             </p>
           </div>
           <div>
             <p className="text-gray-500">Room per Floor</p>
             <p className="font-medium">
-              {hostel.rooms_per_floor}
+              {data.rooms_per_floor}
             </p>
           </div>
           <div>
             <p className="text-gray-500">Total Rooms</p>
             <p className="font-medium">
-              {hostel.total_rooms}
+              {data.total_rooms}
             </p>
           </div>
           <div>
@@ -119,17 +125,34 @@ const HostelOverview = () => {
               xxxx
             </p>
           </div>
+          <div>
+            <p className="text-gray-500">Allotment</p>
+            <p className="font-medium">
+              {allotment ? "Allotment In progress" : "Allotment Not Started"}
+            </p>
+          </div>
+          {error && (
+            <p className="text-sm text-red-600 mt-3">{error}</p>
+          )}
         </div>
 
         <div className="flex gap-3 mt-8">
 
           <Button
             children={"Edit Hostel"}
-            onClick={() => navigate(`/admin/hostel/${hostel._id}/edit`, { state: hostel })} className="px-5 py-2 bg-blue-600 text-white rounded" />
+            onClick={() => navigate(`/admin/hostel/${data?._id}/edit`, { state: data })} className="px-5 py-2 bg-blue-600 text-white rounded" />
           <Button
             children={"Delete Hostel"}
             variant="danger"
             onClick={handleDelete} className="px-5 py-2  text-white rounded" />
+          {data?.is_active && <Button
+            variant="primary"
+            className="px-4"
+            disabled={allotmentLoading}
+            onClick={toggleAllotment}
+          >
+            {allotment ? "Stop The Allotment" : "Allotment Start"}
+          </Button>}
         </div>
 
       </div>

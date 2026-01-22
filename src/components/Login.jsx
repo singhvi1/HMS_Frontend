@@ -94,7 +94,7 @@ const Login = () => {
 
       <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 flex-col">
 
-        {allotment && <div className="absolute top-4 right-4">
+        {allotment !=="CLOSED" && <div className="absolute top-4 right-4">
           <Button
             variant="success"
             className="p-3"

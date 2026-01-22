@@ -87,3 +87,17 @@ export const admin = {
   hostel_name: "Himalya Hostel"
 
 };
+
+export const getNextAllotmentStatus = (current) => {
+  switch (current) {
+    case "CLOSED":
+      return "PHASE_A";
+    case "PHASE_A":
+      return "PHASE_B";
+    case "PHASE_B":
+      return "CLOSED";
+    default:
+      return null;
+  }
+};
+

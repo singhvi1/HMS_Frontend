@@ -106,7 +106,7 @@ export const userService = {
 export const hostelService = {
   create: (data) => api.post("/admin/hostel", data),
 
-  toggleAllotment: (id) => api.post(`/admin/hostel/${id}/allotment`),
+  toggleAllotment: (id, allotment_status) => api.post(`/admin/hostel/${id}/allotment`, { allotment_status }),
 
   getAll: () => api.get("/admin/hostel"),
 

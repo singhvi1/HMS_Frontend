@@ -10,7 +10,7 @@ const HostelOverview = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data, loading } = useSelector(selectAllHostelState);
-  console.log(data)
+  // console.log(data)
   const { allotment, error, allotmentLoading, toggleAllotment } = useAllotment(data?._id)
 
   const fetchHostel = useCallback(async () => {
@@ -128,7 +128,9 @@ const HostelOverview = () => {
           <div>
             <p className="text-gray-500">Allotment</p>
             <p className="font-medium">
-              {allotment ? "Allotment In progress" : "Allotment Not Started"}
+              {allotment === "CLOSED" && "Allotment Closed"}
+              {allotment === "PHASE_A" && "Phase A Allotment Running"}
+              {allotment === "PHASE_B" && "Phase B Allotment Running"}
             </p>
           </div>
           {error && (
@@ -151,8 +153,9 @@ const HostelOverview = () => {
             disabled={allotmentLoading}
             onClick={toggleAllotment}
           >
-            {allotment ? "Stop The Allotment" : "Allotment Start"}
-          </Button>}
+            {allotment === "CLOSED" && "Start Phase A"}
+            {allotment === "PHASE_A" && "Move to Phase B"}
+            {allotment === "PHASE_B" && "Close Allotment"}          </Button>}
         </div>
 
       </div>

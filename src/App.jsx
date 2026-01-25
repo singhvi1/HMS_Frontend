@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import './App.css'
 import { Routes, Route, Navigate } from "react-router-dom"
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 const Home = lazy(() => import("./components/Home.jsx"));
+
 const Login = lazy(() => import("./components/Login.jsx"));
+
 const AdminDashBoard = lazy(() =>
   import("./components/pages/admins/AdminDashBoard.jsx")
 )
@@ -60,53 +62,71 @@ const IssuesList = lazy(() =>
   import("./components/pages/admins/list/issues/IssuesList.jsx")
 );
 const RoomsList = lazy(() => import("./components/pages/admins/list/room/RoomsList.jsx"))
+
 const LeavesList = lazy(() => import("./components/pages/admins/list/leave/LeavesList.jsx"))
+
 const AdminStudentProfile = lazy(() => import("./components/pages/admins/list/student/AdminStudentProfile.jsx"))
+
 const AdminRoomProfile = lazy(() => import("./components/pages/admins/list/room/AdminRoomProfile.jsx"))
+
 const EditRoom = lazy(() => import("./components/pages/admins/list/room/EditRoom.jsx"))
+
 const CreateRoom = lazy(() => import("./components/forms/CreateRoom.jsx"))
 const EditStudent = lazy(() => import("./components/pages/admins/list/student/EditStudent.jsx"))
+
 const AdminIssueProfile = lazy(() => import("./components/pages/admins/list/issues/AdminIssueProfile.jsx"));
+
 const PageLoader = lazy(() => import("./components/common/PageLoader.jsx"))
-import { removeLoggedinUser, setLoggedinUser } from './utils/store/logedinUser'
+
+import { removeLoggedinUser, selectLoggedinUserAllState, setError, setLoggedinUser } from './utils/store/logedinUser'
+
 import { userService } from "./services/apiService";
+
+import toast from "react-hot-toast";
+const AdminALlotment = lazy(() => import("./components/pages/admins/allotment/AdminALlotment.jsx"));
+
 const Allotment = lazy(() => import("./components/pages/admins/allotment/allotment.jsx"));
+
 const List = lazy(() => import("./components/pages/student/studentPersonalList/List.jsx"));
+
 const HostelOverview = lazy(() => import("./components/pages/admins/hostel/HostelOverview.jsx"))
+
 const EditHostel = lazy(() => import("./components/pages/admins/hostel/EditHostel.jsx"))
+
 const HostelForm = lazy(() => import("./components/forms/HostelForm.jsx"))
 
 
 
 function App() {
-  const user = useSelector((state) => state.loggedinUser);
+  const { user, loading } = useSelector(selectLoggedinUserAllState)
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      setLoading(false);
-      return;
-    }
+    if (!loading) return;
     const fetchMe = async () => {
       try {
         const res = await userService.getMe();
         dispatch(setLoggedinUser(res.data.user));
       } catch (err) {
         dispatch(removeLoggedinUser());
-        console.log(err)
-      } finally {
-        setLoading(false)
+        dispatch(setError(err || "not able to login please Try again"));
+        // console.log(err)
+        toast.error(
+          err?.response?.data?.message || "Session expired, please login"
+        );
+
       }
     };
 
     fetchMe();
-  }, [dispatch, user]);
+  }, [dispatch, loading]);
 
 
   if (loading) {
     return <PageLoader />
   }
+
+
 
 
   return (
@@ -166,6 +186,7 @@ function App() {
                 <Route path="issues" element={<IssuesList />} />
                 <Route path="issues/:id" element={<AdminIssueProfile />} />
                 <Route path="leaves" element={<LeavesList />} />
+                <Route path="allotmenet" element={<AdminALlotment />} />
                 <Route path="*" element={<NotFound />} />
 
               </Route>
@@ -175,7 +196,9 @@ function App() {
           <>
 
             <Route path="/login" element={<Login />} />
-            <Route path="/allotment" element={<Allotment />} />
+            <Route path="/allotment/phase-a" element={<Allotment />} />
+            <Route path="/allotment/phase-a/newUserStudent" element={<CreateStudent />} />
+            <Route path="/allotment/phase-b" element={<CreateStudent />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </>
         )}

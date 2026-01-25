@@ -9,9 +9,10 @@ import BackButton from "../../../../common/ui/Backbutton";
 import { roomService } from "../../../../../services/apiService";
 import { useCallback, useEffect } from "react";
 import SearchBar from "../../../../common/table/SearchBar";
-import useRoomStateToggle from "../../../../../customHooks/useRoomStateToggle";
+import { useRoomStateToggle } from "../../../../../customHooks/useRoomStateToggle";
 import PageLoader from "../../../../common/PageLoader";
 import { RefreshCcw } from "lucide-react";
+import { useAllotmentStatus } from "../../../../../customHooks/useAllotment";
 
 
 
@@ -23,8 +24,8 @@ const RoomsList = () => {
     const { items, pages, limit, page } = useSelector(selectRoomsPageData);
     const { loading, error } = useSelector(selectAllRoomState);
     const { toggleRoomStatus, loadingId } = useRoomStateToggle();
-
-
+    const { allotmentInfo } = useAllotmentStatus()
+    console.log(allotmentInfo)
 
 
     const fetchRoomList = useCallback(async () => {
@@ -49,11 +50,39 @@ const RoomsList = () => {
         return <h1>Error Page : {error}</h1>
     }
 
+    const renderContent = () => {
+        if (loading && items.length === 0) {
+            return <PageLoader />
+        }
 
+        if (error) {
+            return <div className="p-8 text-center text-red-500 font-medium">Error: {error}</div>
+        }
+        if (!loading && items?.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                    <p className="text-lg">No maintenance requests found.</p>
+                </div>
+            )
+        }
+
+        return (
+            <>
+                <Table columns={roomColumns(navigate, toggleRoomStatus, loadingId, allotmentInfo)} data={items} />
+
+                <Pagination
+                    currPage={page}
+                    totalPages={pages}
+                    onPageChange={(p) => dispatch(setRoomsPage(p))}
+                />
+            </>
+        )
+    }
     return (
         <div className="bg-white rounded-xl shadow p-6">
             <BackButton />
             <div className="flex items-center justify-between mb-6">
+
                 <div className="flex gap-1 items-center-safe">
                     <h2 className="text-xl font-semibold text-gray-800">
                         Room List
@@ -124,13 +153,7 @@ const RoomsList = () => {
                 </div>
             </div>
 
-            <Table columns={roomColumns(navigate, toggleRoomStatus, loadingId)} data={items} />
-
-            <Pagination
-                currPage={page}
-                totalPages={pages}
-                onPageChange={(p) => dispatch(setRoomsPage(p))}
-            />
+            {renderContent()}
         </div>
     );
 };

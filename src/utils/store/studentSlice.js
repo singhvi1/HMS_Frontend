@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
 const initialState = {
   items: [],
@@ -46,6 +47,17 @@ const studentsSlice = createSlice({
         student.user_id.status = status
       }
     },
+    setStudentVerificationStatus: (state, action) => {
+      const { user_id, status } = action.payload;
+      console.log(user_id, "this is userId", "status", status)
+      const student = state.items.find(s => s.user_id?._id === user_id)
+      console.log(student, "from store student detail ")
+      if (student) {
+        student.verification_status = status
+      } else {
+        toast.error("No student Found ")
+      }
+    },
     removeStudent: (state, action) => {
       const user_id = action.payload;
       state.items = state?.items?.filter(s => s.user_id?._id.toString() !== user_id);
@@ -91,6 +103,7 @@ export const {
   setStudent,
   setStudentsPageSize,
   setStudentStatus,
+  setStudentVerificationStatus,
   removeStudent,
   setStudentError,
   forceStudentRefresh,
@@ -106,6 +119,12 @@ export const {
 
 const selectStudentsState = (state) => state.students;
 export const selectStudentByUserId = (id) => (state) => state.students.items.find((s) => s.user_id?._id === id);
+
+export const selectStudentVerificationStatus = (id) => (state) => {
+  const student = selectStudentByUserId(id)(state);
+
+  return student?.verification_status;
+};
 
 export const selectStudentsItems = (state) => selectStudentsState(state).items
 export const selectStudentsFilters = (state) => selectStudentsState(state).filters

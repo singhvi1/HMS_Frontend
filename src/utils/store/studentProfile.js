@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 const initialState = {
     student: null,
     loading: true,
@@ -18,4 +18,13 @@ const studentProfile = createSlice({
 })
 export const { setStudent, reSetStudent } = studentProfile.actions;
 
+
+const studentProfileState = (state) => state?.studentProfile;
+export const selectAllstudentProfileState = createSelector(
+    [studentProfileState],
+    (studentProfile) => ({
+        student: studentProfile.student,
+        loading: studentProfile.loading,
+    })
+)
 export default studentProfile.reducer;

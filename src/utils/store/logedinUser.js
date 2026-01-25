@@ -1,31 +1,48 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
+
 const loggedinUser = createSlice({
     name: "loggedinUser",
-    initialState: null,
+    initialState: {
+        user: null,
+        loading: true,
+        error: null,
+    },
     reducers: {
-        setLoggedinUser: (_state, action) => {
-            return action.payload;
+        setLoggedinUser: (state, action) => {
+            state.user = action.payload
+            state.loading = false
+            state.error = null
         },
-        removeLoggedinUser: () => {
-            return null;
+        setError: (state, action) => {
+            state.error = action.payload?.message || action.payload?.response?.data?.message
+            state.loading = false
+        },
+        removeLoggedinUser: (state) => {
+            state.user = null
+            state.loading = true;
+            state.error = null;
         }
 
     }
 })
-export const { setLoggedinUser, removeLoggedinUser } = loggedinUser.actions;
+export const { setLoggedinUser, removeLoggedinUser, setError } = loggedinUser.actions;
 
 
 const selectLoggedinUserState = (state) => state.loggedinUser;
+
 export const selectLoggedinUserAllState = createSelector(
     [selectLoggedinUserState],
     (loggedinUser) => ({
-        id: loggedinUser._id,
-        full_name: loggedinUser.full_name,
-        email: loggedinUser.email,
-        phone: loggedinUser.phone,
-        role: loggedinUser.role,
-        status: loggedinUser.status,
+        user: loggedinUser.user,
+        loading: loggedinUser.loading,
+        error: loggedinUser.error,
+        id: loggedinUser?.user?._id,
+        full_name: loggedinUser?.user?.full_name,
+        email: loggedinUser?.user?.email,
+        phone: loggedinUser?.user?.phone,
+        role: loggedinUser?.user?.role,
+        status: loggedinUser?.user?.status,
     })
 )
 export default loggedinUser.reducer;

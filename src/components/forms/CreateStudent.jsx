@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { BackButton, Button } from "../index"
-import { roomService, studentService } from "../../services/apiService";
+import { allotmentService, roomService, studentService } from "../../services/apiService";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { selectStudentByUserId, setStudent } from "../../utils/store/studentSlice";
+import { selectStudentByUserId, setStudent, } from "../../utils/store/studentSlice";
+import { setStudent as setStudentProfile } from "../../utils/store/studentProfile"
 import { selectRoomById } from "../../utils/store/roomsSlice";
 import { mapFormToCreateStudentPayload } from "../../../data";
 import { initialForm } from "../../../data";
+import { selectAllotedRoomById } from "../../utils/store/allotmentRoom";
+import { setLoggedinUser } from "../../utils/store/logedinUser";
 
 const mapRoomToForm = (room) => ({
     block: room?.block || "",
@@ -28,6 +31,18 @@ const mapStudentToForm = (student) => ({
     room_number: student?.room_id?.room_number || "",
     capacity: student?.room_id?.capacity || "1",
 });
+const mapFormToAllotmentPayload = (form) => ({
+    full_name: form.full_name,
+    email: form.email,
+    phone: form.phone,
+    password: form.password,
+
+    sid: form.sid,
+    branch: form.branch,
+    permanent_address: form.permanent_address,
+    guardian_name: form.guardian_name,
+    guardian_contact: form.guardian_contact,
+});
 
 const CreateStudent = ({ studentId }) => {
     const isEdit = Boolean(studentId);
@@ -36,37 +51,19 @@ const CreateStudent = ({ studentId }) => {
     const [form, setForm] = useState(initialForm);
     const [searchParams] = useSearchParams()
     const roomId = searchParams.get("roomId")
+    const isAllotmentA = location.pathname.includes("phase-a")
+        && Boolean(roomId);
+    const isAllotmentB = location.pathname.includes("phase-b");
     const roomByStore = useSelector(selectRoomById(roomId))
+    const allotedRoomByStore = useSelector(selectAllotedRoomById(roomId))
+    // console.log(allotedRoomByStore)
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const studentFromStore = useSelector(selectStudentByUserId(studentId))
 
-    //fetching room by id in room if admin want to add student 
-    useEffect(() => {
-        if (isEdit || !roomId) return;
-        const fetchRoomById = async (id) => {
-            try {
-                const res = await roomService.getRoomById(id)
-                const room = res.data.room
-                setForm(prev => ({
-                    ...prev, ...mapRoomToForm(room)
-                }));
-            } catch (err) {
-                console.log(err, "fetching error roomId")
-            }
-        }
-        if (roomByStore) {
-            setForm(prev => ({
-                ...prev, ...mapRoomToForm(roomByStore)
-            }));
-            return;
-        }
-        if (roomId) {
-            fetchRoomById(roomId);
-        }
-    }, [isEdit, roomByStore, roomId]);
 
 
+    //editing a  studnet
     useEffect(() => {
         if (!isEdit) return;
         if (studentFromStore) {
@@ -90,9 +87,64 @@ const CreateStudent = ({ studentId }) => {
 
     }, [isEdit, studentId, studentFromStore])
 
+    //fetching room by id in room if admin want to add student 
+    useEffect(() => {
+        if (isEdit || !roomId || isAllotmentA) return;
+        const fetchRoomById = async (id) => {
+            try {
+                const res = await roomService.getRoomById(id)
+                const room = res.data.room
+                setForm(prev => ({
+                    ...prev, ...mapRoomToForm(room)
+                }));
+            } catch (err) {
+                console.log(err, "fetching error roomId")
+            }
+        }
+
+        if (roomByStore) {
+            setForm(prev => ({
+                ...prev, ...mapRoomToForm(roomByStore)
+            }));
+            return;
+        }
+        if (roomId) {
+            fetchRoomById(roomId);
+        }
+    }, [isAllotmentA, isEdit, roomByStore, roomId]);
+
+
+    //during allotment room detail filling 
+    useEffect(() => {
+        if (!isAllotmentA || !roomId) return;
+        if (allotedRoomByStore) {
+            setForm(prev => ({
+                ...prev, ...mapRoomToForm(allotedRoomByStore)
+            }));
+            return;
+        }
+        const fetchAllotedRoomById = async (roomId) => {
+            try {
+                const res = await allotmentService.getRoomById(roomId)
+                const room = res.data.room
+                setForm(prev => ({
+                    ...prev, ...mapRoomToForm(room)
+                }));
+            } catch (err) {
+                console.log(err, "fetching error roomId for allotment")
+            }
+        }
+
+        if (roomId) {
+            fetchAllotedRoomById(roomId);
+        }
+    }, [allotedRoomByStore, isAllotmentA, roomId])
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.block || !form.room_number) {
+        if (!isAllotmentB && (!form.block || !form.room_number)) {
             toast.error("Room assignment is required");
             setLoading(false);
             return;
@@ -103,11 +155,39 @@ const CreateStudent = ({ studentId }) => {
 
         try {
             if (isEdit) {
-                const { password, ...updatedPayload } = form;
+                const { _password, ...updatedPayload } = form;
                 const res = await studentService.updateStudent(studentId, updatedPayload);
                 dispatch(setStudent(res.data.student))
                 toast.success("Student Updated Successfully")
                 navigate(`/admin/students/${res.data.student.user_id._id}`);
+
+            } else if (isAllotmentA) {
+                const payload = {
+                    ...mapFormToAllotmentPayload(form),
+                    ...(roomId && { room_id: roomId })
+                }
+                const res = await allotmentService.addUserStudent(payload);
+                if (!res.data?.success) {
+                    throw new Error(res.data?.message || "Student creation failed in phase a");
+                }
+                console.log(res.data)
+                // dispatch(setLoggedinUser())
+                dispatch(setLoggedinUser(res.data.data.populatedStudent?.user_id
+                ));
+                dispatch(setStudentProfile(res.data.data.populatedStudent));
+                navigate(`/student`, { replace: true })
+
+            } else if (isAllotmentB) {
+                const payload = {
+                    ...mapFormToAllotmentPayload(form),
+                }
+                const res = await allotmentService.addUserStudentB(payload);
+                if (!res.data?.success) {
+                    throw new Error(res.data?.message || "Student creation failed in phase b");
+                }
+                dispatch(setLoggedinUser(res.data.data.populatedStudent?.user_id));
+                dispatch(setStudentProfile(res.data.data.populatedStudent));
+                navigate(`/student`, { replace: true })
 
             }
             else {
@@ -130,10 +210,14 @@ const CreateStudent = ({ studentId }) => {
             setLoading(false);
         }
     };
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
+
+
     return (
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
             <BackButton />
@@ -183,7 +267,7 @@ const CreateStudent = ({ studentId }) => {
                     />
                 </section>
 
-                <section>
+                {!isAllotmentB && <section>
                     <h2 className="font-semibold text-lg mb-3">Room Assignment</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <select name="block" onChange={handleChange} value={form.block} className="input" required>
@@ -216,7 +300,7 @@ const CreateStudent = ({ studentId }) => {
                         />
 
                     </div>
-                </section>
+                </section>}
 
                 <Button type="submit" disabled={loading} variant='success' className="px-6 py-2 ">
                     {loading

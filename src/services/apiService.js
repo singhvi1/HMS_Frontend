@@ -119,3 +119,24 @@ export const hostelService = {
 
   delete: (id) => api.delete(`/admin/hostel/${id}`)
 };
+
+export const allotmentService = {
+
+  getQuickInfo: () => api.get("/allotment/quickInfo"),
+
+  getAllotmentStatus: () => api.get("/allotment/status"),
+
+  getAllPhaseARoom: () => api.get('/allotment/rooms'),
+
+  getVerificationList: (params) => api.get('/allotment/verification-requests', { params }),
+
+  getRoomById: (roomId) => api.get(`/allotment/room/${roomId}`),
+
+
+  addUserStudent: (data) => api.post('/allotment/phase-a/register', data),
+  addUserStudentB: (data) => api.post('/allotment/phase-b/register', data),
+
+  capacity: ({action, roomCount}) => api.patch("/allotment/capacity", {action, roomCount}),
+
+  verification: (status, studentUserId) => api.patch(`/allotment/${studentUserId}/verify`, { status })
+}

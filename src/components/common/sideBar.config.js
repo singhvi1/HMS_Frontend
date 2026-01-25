@@ -5,7 +5,8 @@ import {
     CalendarDays,
     Megaphone,
     BedDouble,
-    List
+    List,
+    IdCard
 } from "lucide-react";
 
 export const sidebarConfig = {
@@ -14,6 +15,7 @@ export const sidebarConfig = {
         { label: "Announcements", icon: Megaphone, path: "/admin/anns" },
         { label: "Students", icon: BedDouble, path: "/admin/students" },
         { label: "Rooms", icon: BedDouble, path: "/admin/rooms" },
+        { label: "Verify Allotment", icon: IdCard, path: "/admin/allotmenet" },
         { label: "Issues", icon: Wrench, path: "/admin/issues" },
         { label: "Leaves", icon: CalendarDays, path: "/admin/leaves" },
         { label: "Payments", icon: CreditCard, path: null },

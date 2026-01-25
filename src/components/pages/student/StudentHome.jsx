@@ -4,7 +4,7 @@ import QuickActionsGrid from "../../common/QuickActionGrid";
 import { studentService } from "../../../services/apiService";
 import PageLoader from "../../common/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { setStudent } from "../../../utils/store/studentProfile";
+import { selectAllstudentProfileState, setStudent } from "../../../utils/store/studentProfile";
 import ProfileHeader from "../../profile/ProfileHeader";
 
 
@@ -13,7 +13,8 @@ import ProfileHeader from "../../profile/ProfileHeader";
 
 const StudentHome = () => {
   const dispatch = useDispatch()
-  const { student, loading } = useSelector((store) => store.studentProfile)
+  const { student, loading } = useSelector(selectAllstudentProfileState)
+  console.log(student)
 
 
 
@@ -26,18 +27,19 @@ const StudentHome = () => {
     }
   }, [dispatch])
   useEffect(() => {
-    if (loading) {
-      fetchStudent()
+    if (!loading && student) {
+      return;
     }
-  }, [fetchStudent, loading]);
+    fetchStudent()
+  }, [fetchStudent, loading, student]);
 
   if (loading) {
     return <PageLoader />
   }
   if (!student) {
-    return <h2>No student Found</h2>
+    return <div className="p-4 bg-amber-50"><h2 className="text-3xl font-bold text-center">No student profile found.</h2></div>;
   }
-  return (
+  return (  
     <section className="space-y-6">
       <ProfileHeader student={student} />
       <QuickActionsGrid actions={studentActions} />

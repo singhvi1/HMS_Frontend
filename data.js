@@ -101,3 +101,11 @@ export const getNextAllotmentStatus = (current) => {
   }
 };
 
+export const allotmentRouteMap = {
+  PHASE_A: "/allotment/phase-a",
+  PHASE_B: "/allotment/phase-b",
+};
+
+
+
+

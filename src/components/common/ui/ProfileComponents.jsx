@@ -1,5 +1,18 @@
 import ProfileAvatar from "../../profile/ProfileAvatar";
 
+export const roomCapacityBatch = ({capacity}) => {
+    return (
+        <>
+            <span className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                Type: {
+                    capacity === 1 ? "Single"
+                        : capacity === 2 ? "Double"
+                            : "Triple"
+                }
+            </span>
+        </>
+    )
+}
 export const InfoItem = ({ label, value }) => (
     <div className="space-y-0.5">
         <p className="text-[10px] uppercase tracking-widest font-black text-slate-400">{label}</p>

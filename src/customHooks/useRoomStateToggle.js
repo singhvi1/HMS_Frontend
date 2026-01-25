@@ -4,7 +4,7 @@ import { roomService } from '../services/apiService';
 import { setRoom } from '../utils/store/roomsSlice';
 import toast from 'react-hot-toast';
 
-const useRoomStateToggle = () => {
+export const useRoomStateToggle = () => {
     const dispatch = useDispatch();
     const [loadingId, setLoadingId] = useState(null);
 
@@ -34,4 +34,3 @@ const useRoomStateToggle = () => {
 
 }
 
-export default useRoomStateToggle

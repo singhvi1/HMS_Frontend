@@ -9,7 +9,7 @@ import QuickActionsGrid from "../../../../common/QuickActionGrid"
 import { roomService } from '../../../../../services/apiService';
 import { useEffect } from 'react';
 import Button from '../../../../common/ui/Button';
-import useRoomStateToggle from '../../../../../customHooks/useRoomStateToggle';
+import { useRoomStateToggle } from '../../../../../customHooks/useRoomStateToggle';
 
 
 
@@ -20,7 +20,7 @@ const AdminRoomProfile = () => {
     const dispatch = useDispatch()
     const { toggleRoomStatus } = useRoomStateToggle()
     const room = useSelector(selectRoomById(id));
-
+    console.log(room)
     const fetchRoomById = async () => {
         try {
             const res = await roomService.getRoomById(id)

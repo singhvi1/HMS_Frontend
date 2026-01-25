@@ -13,6 +13,8 @@ import { useDebounce } from '../../../../../customHooks/useDebounce'
 import useStudentDelete from '../../../../../customHooks/useStudentDelete'
 import PageLoader from '../../../../common/PageLoader'
 import { RefreshCcw } from 'lucide-react'
+import { useAllotmentStatus } from '../../../../../customHooks/useAllotment'
+import useVerificationStatus from '../../../../../customHooks/useVerification'
 
 
 const StudentList = () => {
@@ -23,9 +25,10 @@ const StudentList = () => {
     const { items, page, limit, pages } = useSelector(selectStudentPageData);
     const { loading, error } = useSelector(selectStudentAllState);
     const { deleteStudent } = useStudentDelete()
-
-
+    const { allotmentInfo } = useAllotmentStatus()
+    const { verifyStudent } = useVerificationStatus()
     const debouncedSearch = useDebounce(filters.search, 600);
+
     const fetchData = useCallback(async () => {
         try {
             const res = await studentService.getAllStudents({
@@ -65,7 +68,7 @@ const StudentList = () => {
         }
         return (
             <>
-                <Table columns={studentColumns(navigate, deleteStudent)}
+                <Table columns={studentColumns(navigate, allotmentInfo, verifyStudent, deleteStudent)}
                     data={items} />
 
                 <Pagination

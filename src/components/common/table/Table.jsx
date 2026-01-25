@@ -1,9 +1,10 @@
 
 const Table = ({ columns = [], data = [] }) => {
+    console.log(data)
     return (
         <div className='p-6 bg-gray-50 '>
             <h2 className="text-2xl font-semibold mb-4 text-gray-800 ">
-                List 
+                List
             </h2><div className="flex justify-center w-full mt-4">
 
             </div>
@@ -12,7 +13,13 @@ const Table = ({ columns = [], data = [] }) => {
                     <thead className="bg-gray-100">
                         <tr className="text-left">
                             {columns?.map((col) => (
-                                <th key={col.key} className='px-4 py-3 border'>{col.label}</th>
+                                <th
+                                    key={col.key}
+                                    // Added: bg-gray-50, text-center, font-semibold, text-gray-700
+                                    className='px-4 py-3 border   text-center text-sm font-semibold text-gray-700 whitespace-nowrap'
+                                >
+                                    {col.label}
+                                </th>
                             ))}
                         </tr>
 

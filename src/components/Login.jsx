@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoggedinUser } from "../utils/store/logedinUser";
 import { authService, hostelService } from "../services/apiService";
 import Button from "./common/ui/Button";
-import { selectHostelAllotment, setHostel } from "../utils/store/hostelSlice";
+import { selectAllHostelState, selectHostelAllotment, setHostel } from "../utils/store/hostelSlice";
 import { useNavigate } from "react-router-dom";
+import { allotmentRouteMap } from "../../data";
+import Topbar from "./layout/Topbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +16,10 @@ const Login = () => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const allotment = useSelector(selectHostelAllotment)
-  console.log(allotment);
+  const { allotment_status, loading } = useSelector(selectAllHostelState)
+  const allotmentRoute = allotmentRouteMap[allotment_status];
+
+
 
   const fillAdminCredentials = () => {
     setEmail("admin@hms.com");
@@ -50,57 +54,32 @@ const Login = () => {
         const res = await hostelService.getAll();
         const hostel = res?.data?.data?.[0];
         if (hostel) {
-          console.log(hostel.data || "nonting")
+          // console.log(hostel)
           dispatch(setHostel(hostel));
         }
       } catch (err) {
         console.error("Failed to fetch hostel status", err);
       }
     };
-
+    if (!loading) return;
     fetchHostelStatus();
-  }, []);
+  }, [dispatch, loading]);
 
   return (
     <>
       <NavBar />
-      {(
-        <div className="mt-6 space-y-2 text-center">
-          <p className="text-sm text-gray-600">
-            Login as{" "}
-            <span
-              onClick={fillAdminCredentials}
-              className="text-indigo-600 font-medium cursor-pointer hover:underline"
-            >
-              Admin
-            </span>
-          </p>
-
-          <p className="text-sm text-gray-600">
-            Login as{" "}
-            <span
-              onClick={fillStudentCredentials}
-              className="text-indigo-600 font-medium cursor-pointer hover:underline"
-            >
-              Student
-            </span>
-          </p>
-
-          <p className="text-xs text-gray-500">
-            Click a role to auto-fill credentials
-          </p>
-        </div>
-      )}
+      <Topbar />
 
       <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 flex-col">
 
-        {allotment !=="CLOSED" && <div className="absolute top-4 right-4">
-          <Button
-            variant="success"
-            className="p-3"
-            onClick={() => navigate(`/allotment`)}
-          >Allotment</Button>
-        </div>}
+        {allotmentRoute && (
+          <div className="absolute top-4 right-4">
+            <Button
+              variant="success"
+              className="p-3"
+              onClick={() => navigate(allotmentRoute)}
+            >Allotment</Button>
+          </div>)}
 
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
 
@@ -152,6 +131,33 @@ const Login = () => {
             </Button>
           </form>
         </div>
+        {(
+          <div className="mt-6 space-y-2 text-center">
+            <p className="text-sm text-gray-600">
+              Login as{" "}
+              <span
+                onClick={fillAdminCredentials}
+                className="text-indigo-600 font-medium cursor-pointer hover:underline"
+              >
+                Admin
+              </span>
+            </p>
+
+            <p className="text-sm text-gray-600">
+              Login as{" "}
+              <span
+                onClick={fillStudentCredentials}
+                className="text-indigo-600 font-medium cursor-pointer hover:underline"
+              >
+                Student
+              </span>
+            </p>
+
+            <p className="text-xs text-gray-500">
+              Click a role to auto-fill credentials
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

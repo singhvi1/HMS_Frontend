@@ -1,16 +1,22 @@
-import React from 'react';
-import { Mail, Phone, MapPin, Building2, User, PhoneCall, Hash } from 'lucide-react';
+import { Mail, Phone, MapPin, Building2, User, PhoneCall, Hash, Info, File } from 'lucide-react';
 import ProfileAvatar from './ProfileAvatar';
 import { StatusBadge } from '../common/ui/ProfileComponents';
+
 
 const ProfileHeader = ({ student }) => {
     const room = student?.room_id
         ? `${student.room_id?.block?.toUpperCase()}-${student.room_id?.room_number}`
         : "Not Assigned";
 
+    const allotment = student?.allotment_status
+        ? `${student.allotment_status} - ${student?.allotment_phase || 'N/A'}`
+        : "Not Allotted";
+
+
+    const capacity = student?.room_id?.capacity || "Not defined";
     return (
         <div className="space-y-6">
-            
+
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 
                 <div className="h-32 bg-linear-to-r from-indigo-600 to-blue-500 relative p-2">
@@ -22,7 +28,6 @@ const ProfileHeader = ({ student }) => {
                 <div className="px-8 pb-8">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
 
-                        {/* 2. Avatar (Negative Margin to pull it up) */}
                         <div className="-mt-12 relative rounded-full border-4 border-white shadow-md bg-white">
                             <ProfileAvatar
                                 image_url={student?.image_url || "https://avatars.githubusercontent.com/u/120703712?v=4"}
@@ -49,10 +54,17 @@ const ProfileHeader = ({ student }) => {
                                 </div>
                                 <StatusBadge status={student?.user_id?.status} />
                             </div>
-
+                            <span className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                                Type: {
+                                    capacity === 1 ? "Single"
+                                        : capacity === 2 ? "Double"
+                                            : capacity === 3 ? "Triple" : "Not-Assigned"
+                                }
+                            </span>
                             <hr className="my-6 border-slate-100" />
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+                                {/* Row 1 */}
                                 <DetailItem
                                     icon={Hash}
                                     label="Branch"
@@ -68,6 +80,8 @@ const ProfileHeader = ({ student }) => {
                                     label="Room Number"
                                     value={room}
                                 />
+
+                                {/* Row 2 */}
                                 <DetailItem
                                     icon={User}
                                     label="Guardian Name"
@@ -78,12 +92,24 @@ const ProfileHeader = ({ student }) => {
                                     label="Guardian Contact"
                                     value={student?.guardian_contact}
                                 />
+
                                 <DetailItem
                                     icon={MapPin}
                                     label="Permanent Address"
                                     value={student?.permanent_address}
-                                    isFullWidth
                                 />
+                                <DetailItem
+                                    icon={File}
+                                    label="Document Verification"
+                                    value={student?.verification_status}
+                                />
+                                <DetailItem
+                                    icon={Info}
+                                    label="Allotment Status- Phase"
+                                    value={allotment}
+                                />
+
+
                             </div>
                         </div>
                     </div>

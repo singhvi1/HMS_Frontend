@@ -85,7 +85,7 @@ import { userService } from "./services/apiService";
 import toast from "react-hot-toast";
 const AdminALlotment = lazy(() => import("./components/pages/admins/allotment/AdminALlotment.jsx"));
 
-const Allotment = lazy(() => import("./components/pages/admins/allotment/allotment.jsx"));
+const Allotment = lazy(() => import("./components/pages/admins/allotment/Allotment.jsx"));
 
 const List = lazy(() => import("./components/pages/student/studentPersonalList/List.jsx"));
 

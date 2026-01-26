@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { allotmentService } from "../services/apiService";
 import toast from "react-hot-toast";
 import { setStudentVerificationStatus } from "../utils/store/studentSlice";
-import { setStudentVerificationSliceStatus } from "../utils/store/verificationRequestSlice";
+import { setVerificationStatus } from "../utils/store/verificationRequestSlice";
 
 const useVerificationStatus = () => {
     const dispatch = useDispatch();
@@ -20,13 +20,15 @@ const useVerificationStatus = () => {
         if (!window.confirm(confirmMsg)) return;
         try {
             const res = await allotmentService.verification(status, id);
-
-            dispatch(setStudentVerificationStatus({ user_id: id, status }))
-            dispatch(setStudentVerificationSliceStatus({ user_id: id, status }))
+            const studentData = res.data?.data;
+            // console.log(res, "this is res after verification form useVerificationStatus")
+            // console.log(studentData, "this is studentData after verification form useVerificationStatus");
+            dispatch(setStudentVerificationStatus({ user_id: id, studentData: studentData }))
+            dispatch(setVerificationStatus({ user_id: id, status: studentData.verification_status }))
             toast.success(`student profile successfuly ${res.data.message || successAction}`)
 
             // console.log(res, "this is after verification")
-            console.log(status, "this is dispatching data")
+            // console.log(status, "this is dispatching data")
         } catch (err) {
             console.log("not able verify stduent Documents", err);
             alert(err.response?.data?.message || "Action failed");

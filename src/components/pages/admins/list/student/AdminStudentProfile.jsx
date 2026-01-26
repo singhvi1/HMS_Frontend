@@ -18,13 +18,14 @@ const AdminStudentProfile = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    console.log(id)
     const student = useSelector(selectStudentByUserId(id));
+    console.log(student, "this is studnet form store in adminStudentProfile")
     const status = student?.user_id?.status
     const verificationStatus = student?.verification_status
     const { allotmentInfo } = useAllotmentStatus()
     const { verifyStudent } = useVerificationStatus()
-    console.log(allotmentInfo)
+    // console.log(allotmentInfo)
     const { toggleStudentFxn } = useStudentToggle();
     const { deleteStudent } = useStudentDelete();
     const [loading, setLoading] = useState(false);
@@ -60,7 +61,7 @@ const AdminStudentProfile = () => {
             <h1>No student found</h1>
         )
     }
-    console.log(student)
+    // console.log(student)
 
     return (
         <div>

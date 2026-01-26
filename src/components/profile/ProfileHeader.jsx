@@ -1,12 +1,14 @@
 import { Mail, Phone, MapPin, Building2, User, PhoneCall, Hash, Info, File } from 'lucide-react';
 import ProfileAvatar from './ProfileAvatar';
 import { StatusBadge } from '../common/ui/ProfileComponents';
+import DownloadButton from '../common/ui/DownloadButton';
 
 
 const ProfileHeader = ({ student }) => {
+    // console.log(student, "this is student data in profile header")
     const room = student?.room_id
         ? `${student.room_id?.block?.toUpperCase()}-${student.room_id?.room_number}`
-        : "Not Assigned";
+        : `${student?.block?.toUpperCase() ?? "Not Assigned "}-${student?.room_number ?? ""}`;
 
     const allotment = student?.allotment_status
         ? `${student.allotment_status} - ${student?.allotment_phase || 'N/A'}`
@@ -22,6 +24,7 @@ const ProfileHeader = ({ student }) => {
                 <div className="h-32 bg-linear-to-r from-indigo-600 to-blue-500 relative p-2">
                     <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-medium border border-white/30">
                         Student Portal
+
                     </div>
                 </div>
 
@@ -52,7 +55,13 @@ const ProfileHeader = ({ student }) => {
                                         </p>
                                     </div>
                                 </div>
-                                <StatusBadge status={student?.user_id?.status} />
+                                <div className="flex items-center gap-3">
+                                    <DownloadButton
+                                        studentId={student?.user_id?._id}
+                                        className="text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-full transition-all duration-200 border border-transparent hover:border-indigo-100"
+                                    />
+                                    <StatusBadge status={student?.user_id?.status} />
+                                </div>
                             </div>
                             <span className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                                 Type: {

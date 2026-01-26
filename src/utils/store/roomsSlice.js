@@ -7,7 +7,8 @@ const initialState = {
   filters: {
     search: "",
     block: "",
-    is_active: ""
+    is_active: "",
+    allocation_status: "",
   },
   pagination: {
     page: 1,
@@ -48,7 +49,6 @@ const roomsSlice = createSlice({
     setRoomsFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };
       state.pagination.page = 1;
-      state.loading = true;
       state.error = null;
     },
     setRoomsPage: (state, action) => {
@@ -101,8 +101,10 @@ export const selectRoomsPagination = (state) => selectRoomState(state).paginatio
 export const selectRoomsFiltered = createSelector(
   [selectRoomsItems, selectRoomsFilters],
   (items = [], filters) => {
+
     if (!filters) return items;
     const q = (filters?.search || "").trim().toLowerCase()
+
     return (
       items?.filter((item) => {
         const roomNumber = String(item.room_number || "").toLowerCase();
@@ -116,8 +118,10 @@ export const selectRoomsFiltered = createSelector(
 
         const matchActive = filters.is_active === "" ||
           item.is_active === JSON.parse(filters.is_active);
+        const matchAllocationStatus = filters.allocation_status === "" ||
+          item.allocation_status === (filters.allocation_status);
 
-        return matchActive && matchSearch && matchBlock;
+        return matchActive && matchSearch && matchBlock && matchAllocationStatus;
       })
     )
   })

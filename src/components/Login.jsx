@@ -9,16 +9,18 @@ import { selectAllHostelState, selectHostelAllotment, setHostel } from "../utils
 import { useNavigate } from "react-router-dom";
 import { allotmentRouteMap } from "../../data";
 import Topbar from "./layout/Topbar";
+import { useAllotmentStatus, useGetAllHostel } from "../customHooks/useHostel";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allotment_status, loading } = useSelector(selectAllHostelState)
-  const allotmentRoute = allotmentRouteMap[allotment_status];
 
+  const { allotmentInfo } = useAllotmentStatus();
+  const allotmentRoute = allotmentRouteMap[allotmentInfo?.status] || null;
 
 
   const fillAdminCredentials = () => {
@@ -26,9 +28,8 @@ const Login = () => {
     setPassword("Admin@123");
     setError("");
   };
-
   const fillStudentCredentials = () => {
-    setEmail("vikram.kumar@student.hms.com");
+    setEmail("ankit.verma101@testmail.com");
     setPassword("Student@123");
     setError("");
   };
@@ -48,22 +49,6 @@ const Login = () => {
       );
     }
   };
-  useEffect(() => {
-    const fetchHostelStatus = async () => {
-      try {
-        const res = await hostelService.getAll();
-        const hostel = res?.data?.data?.[0];
-        if (hostel) {
-          // console.log(hostel)
-          dispatch(setHostel(hostel));
-        }
-      } catch (err) {
-        console.error("Failed to fetch hostel status", err);
-      }
-    };
-    if (!loading) return;
-    fetchHostelStatus();
-  }, [dispatch, loading]);
 
   return (
     <>

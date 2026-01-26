@@ -13,6 +13,7 @@ import { useRoomStateToggle } from "../../../../../customHooks/useRoomStateToggl
 import PageLoader from "../../../../common/PageLoader";
 import { RefreshCcw } from "lucide-react";
 import { useAllotmentStatus } from "../../../../../customHooks/useAllotment";
+import toast from "react-hot-toast";
 
 
 
@@ -25,7 +26,6 @@ const RoomsList = () => {
     const { loading, error } = useSelector(selectAllRoomState);
     const { toggleRoomStatus, loadingId } = useRoomStateToggle();
     const { allotmentInfo } = useAllotmentStatus()
-    console.log(allotmentInfo)
 
 
     const fetchRoomList = useCallback(async () => {
@@ -33,8 +33,9 @@ const RoomsList = () => {
             const res = await roomService.getAllRooms()
             dispatch(setRooms(res.data))
         } catch (error) {
-            dispatch(setRoomError(error?.message || "Not able to fetch issue"))
-            console.log("Not able to fetch issues list", error?.message);
+            dispatch(setRoomError(error?.response?.data?.message || "Not able to fetch issue"))
+
+
         }
     }, [dispatch])
 
@@ -43,12 +44,6 @@ const RoomsList = () => {
         fetchRoomList();
     }, [fetchRoomList, loading])
 
-    if (loading && items.length === 0) {
-        return <PageLoader />
-    }
-    else if (error) {
-        return <h1>Error Page : {error}</h1>
-    }
 
     const renderContent = () => {
         if (loading && items.length === 0) {
@@ -61,7 +56,7 @@ const RoomsList = () => {
         if (!loading && items?.length === 0) {
             return (
                 <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                    <p className="text-lg">No maintenance requests found.</p>
+                    <p className="text-lg">No Room  found.</p>
                 </div>
             )
         }
@@ -128,19 +123,26 @@ const RoomsList = () => {
                     <option value="c">C</option>
                 </select>
 
-
-
+                <select
+                    className="input"
+                    value={filters.allocation_status}
+                    onChange={(e) => dispatch(setRoomsFilters({ allocation_status: e.target.value }))}
+                >
+                    <option value="">All Availibility</option>
+                    <option value="AVAILABLE">Available</option>
+                    <option value="FULL">Full</option>
+                    <option value="VACANT_UPGRADE">Vacant Upgrade</option>
+                </select>
                 <div className="flex gap-3">
                     <select
                         className="input"
                         value={filters.is_active}
                         onChange={(e) => dispatch(setRoomsFilters({ is_active: e.target.value }))}
                     >
-                        <option value="">All Status</option>
+                        <option value="">All Room Status</option>
                         <option value="true">Active</option>
                         <option value="false">Inactive</option>
                     </select>
-
                     <select
                         className="input"
                         value={limit}

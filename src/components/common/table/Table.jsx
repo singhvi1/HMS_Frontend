@@ -1,6 +1,6 @@
 
 const Table = ({ columns = [], data = [] }) => {
-    console.log(data)
+    // console.log(data[0]);
     return (
         <div className='p-6 bg-gray-50 '>
             <h2 className="text-2xl font-semibold mb-4 text-gray-800 ">

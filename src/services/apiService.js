@@ -24,7 +24,11 @@ export const studentService = {
   getStudent: () => api.get(`/students/profile`),
 
   updateStudent: (user_id, data) => api.patch(`/students/edit/${user_id}`, data),
+
   toogleStudentStatus: (user_id) => api.patch(`/students/status/${user_id}`,),
+
+  downloadDocument: (id) => api.get(`/students/document/${id}`, { responseType: 'blob' }),
+
   deleteStudent: (userId) => api.delete(`/students/${userId}`),
 };
 
@@ -136,7 +140,7 @@ export const allotmentService = {
   addUserStudent: (data) => api.post('/allotment/phase-a/register', data),
   addUserStudentB: (data) => api.post('/allotment/phase-b/register', data),
 
-  capacity: ({action, roomCount}) => api.patch("/allotment/capacity", {action, roomCount}),
+  capacity: ({ action, roomCount }) => api.patch("/allotment/capacity", { action, roomCount }),
 
   verification: (status, studentUserId) => api.patch(`/allotment/${studentUserId}/verify`, { status })
 }

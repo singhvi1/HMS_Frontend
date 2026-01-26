@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux"
 import { authService } from "../services/apiService";
 import { resetAnnouncements } from "../utils/store/announcementsSlice";
-import { clearHostel } from "../utils/store/hostelSlice";
+// import { clearHostel } from "../utils/store/hostelSlice";
 import { resetIssuesSlice } from "../utils/store/issuesSlice";
 import { resetLeaveSlice } from "../utils/store/leaveSlice";
 import { resetRoomSlice } from "../utils/store/roomsSlice";

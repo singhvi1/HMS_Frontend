@@ -14,9 +14,7 @@ export const baseRoomColumns = (navigate) => [
         key: "occupancy",
         label: "Occupied / Capacity",
         render: (row) => {
-            const activeCount =
-                row?.occupants?.filter(s => s.user_id.status === "active").length ?? 0;
-            return `${activeCount} / ${row.capacity}`;
+            return `${row?.occupied_count} / ${row?.capacity}`;
         },
     },
     {

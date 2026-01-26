@@ -51,8 +51,7 @@ const CreateStudent = ({ studentId }) => {
     const [form, setForm] = useState(initialForm);
     const [searchParams] = useSearchParams()
     const roomId = searchParams.get("roomId")
-    const isAllotmentA = location.pathname.includes("phase-a")
-        && Boolean(roomId);
+    const isAllotmentA = location.pathname.includes("phase-a");
     const isAllotmentB = location.pathname.includes("phase-b");
     const roomByStore = useSelector(selectRoomById(roomId))
     const allotedRoomByStore = useSelector(selectAllotedRoomById(roomId))
@@ -164,17 +163,16 @@ const CreateStudent = ({ studentId }) => {
             } else if (isAllotmentA) {
                 const payload = {
                     ...mapFormToAllotmentPayload(form),
-                    ...(roomId && { room_id: roomId })
+                    ...(roomId ? { room_id: roomId } : { room_number: form.room_number, block: form.block }),
                 }
                 const res = await allotmentService.addUserStudent(payload);
                 if (!res.data?.success) {
                     throw new Error(res.data?.message || "Student creation failed in phase a");
                 }
-                console.log(res.data)
                 // dispatch(setLoggedinUser())
-                dispatch(setLoggedinUser(res.data.data.populatedStudent?.user_id
+                dispatch(setLoggedinUser(res.data.data?.student?.user_id
                 ));
-                dispatch(setStudentProfile(res.data.data.populatedStudent));
+                dispatch(setStudentProfile(res.data.data?.student));
                 navigate(`/student`, { replace: true })
 
             } else if (isAllotmentB) {
@@ -191,6 +189,7 @@ const CreateStudent = ({ studentId }) => {
 
             }
             else {
+                console.log("hited not ")
                 const payload = {
                     ...mapFormToCreateStudentPayload(form),
                     ...(roomId && { roomId })

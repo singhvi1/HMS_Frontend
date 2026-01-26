@@ -115,26 +115,14 @@ export const getStudentActions = (
             color: "bg-yellow-100 text-gray-800 hover:bg-yellow-200",
             onClick: () => toggleStudentFxn(userId, status)
         },
-        allotmentInfo?.allowed && {
-            title:
-                verificationStatus === "VERIFIED"
-                    ? "Unverify Student"
-                    : "Verify Student",
+        verificationStatus==="PENDING" && {
+            title: "Verify Student",
             icon: IdCard,
-            description:
-                verificationStatus === "VERIFIED"
-                    ? "Mark student as not verified"
-                    : "Verify student documents",
-            color:
-                verificationStatus === "VERIFIED"
-                    ? "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                    : "bg-green-100 text-gray-800 hover:bg-green-200",
+            description: "Verify student documents",
+            color: "bg-green-100 text-gray-800 hover:bg-green-200",
             onClick: () =>
                 verifyStudent(
-                    userId,
-                    verificationStatus === "VERIFIED"
-                        ? "REJECTED"
-                        : "VERIFIED"
+                    userId, "VERIFIED"
                 )
         },
         {

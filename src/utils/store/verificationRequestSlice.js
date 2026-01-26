@@ -30,7 +30,7 @@ const verificationRequestSlice = createSlice({
 
         setVerificationRequests(state, action) {
             const { data = [], pagination = {} } = action.payload;
-            console.log(data, "this is data")
+            // console.log(data, "this is data")
             state.items = data;
             state.pagination.page = pagination.page ?? 1;
             state.pagination.limit = pagination.limit ?? state.pagination.limit;
@@ -38,7 +38,7 @@ const verificationRequestSlice = createSlice({
             state.pagination.total = pagination.total ?? 0;
             state.loading = false;
             state.error = null;
-            console.log(state.items)
+            // console.log(state.items)
         },
 
         setVerificationRequestsError(state, action) {
@@ -68,11 +68,11 @@ const verificationRequestSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        setStudentVerificationSliceStatus: (state, action) => {
+        setVerificationStatus: (state, action) => {
             const { user_id, status } = action.payload;
-            console.log(user_id, "this is userId", "status", status)
+            // console.log(user_id, "this is userId", "status", status)
             const student = state.items.find(s => s.student.user_id === user_id)
-            console.log(student, "from store student detail ")
+            // console.log(student, "from store student detail ")
             if (student) {
                 student.verification_status = status
             } else {
@@ -90,7 +90,7 @@ export const {
     setVerificationRequestsPage,
     setVerificationRequestsPageSize,
     forceVerificationRequestRefresh,
-    setStudentVerificationSliceStatus
+    setVerificationStatus
 } = verificationRequestSlice.actions;
 
 
@@ -107,16 +107,20 @@ export const selectStudentsTotalCount = (state) => selectVerificationRequestsSta
 
 
 
-export const selectVerificationRequestsPageData = (state) => {
-    const vr = state.verificationRequest;
-
-    return {
-        items: vr?.items ?? [],
-        page: vr?.pagination?.page ?? 1,
-        limit: vr?.pagination?.limit ?? 10,
-        pages: vr?.pagination?.pages ?? 1,
-    };
-};
+export const selectVerificationRequestsPageData = createSelector(
+    [
+        (state) => state.verificationRequest.items,
+        (state) => state.verificationRequest.pagination.page,
+        (state) => state.verificationRequest.pagination.limit,
+        (state) => state.verificationRequest.pagination.total,
+    ],
+    (items, page, limit, total) => ({
+        items,
+        page,
+        limit,
+        pages: Math.ceil(total / limit),
+    })
+);
 
 
 export const selectVerificationRequestsMeta = createSelector(

@@ -1,6 +1,6 @@
-import React from 'react'
+import { lazy } from 'react';
 import { useParams } from 'react-router-dom'
-import CreateRoom from "../../../../forms/CreateRoom"
+const CreateRoom =lazy(()=>import("../../../../forms/CreateRoom")) 
 const EditRoom = () => {
     const { id } = useParams();
     return (

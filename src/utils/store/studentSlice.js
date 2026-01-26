@@ -48,12 +48,30 @@ const studentsSlice = createSlice({
       }
     },
     setStudentVerificationStatus: (state, action) => {
-      const { user_id, status } = action.payload;
-      console.log(user_id, "this is userId", "status", status)
+      const { user_id, studentData } = action.payload;
+      // console.log(user_id, "this is userId", "status", studentData)
       const student = state.items.find(s => s.user_id?._id === user_id)
-      console.log(student, "from store student detail ")
+      // console.log(student, "from store student detail ")
       if (student) {
-        student.verification_status = status
+
+        student.verification_status = studentData?.verification_status;
+        student.allotment_status = studentData.allotment_status;
+        if (!student.room_id) {
+          student.room_id = {};
+        }
+
+        if (studentData?.room_number) {
+          student.room_id.room_number = studentData.room_number;
+        }
+
+        if (studentData?.capacity) {
+          student.room_id.capacity = studentData.capacity;
+        }
+
+        if (studentData?.block) {
+          student.room_id.block = studentData.block;
+        }
+        // console.log(student, "after updating store student detail ")
       } else {
         toast.error("No student Found ")
       }

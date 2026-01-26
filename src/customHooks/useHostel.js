@@ -116,7 +116,6 @@ export const useAllotmentStatus = () => {
             dispatch(setAllotment(status))
         } catch (err) {
             console.error("Status update failed", err);
-            alert("Failed to find status");
         } finally {
             setLoading(false);
         }
@@ -124,10 +123,10 @@ export const useAllotmentStatus = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (allotment_status == null) {
+        if (allotment_status == null && !loading) {
             findAllotmentStatus();
         }
-    }, [allotment_status, findAllotmentStatus])
+    }, [allotment_status, findAllotmentStatus, loading])
     const allotmentInfo = {
         status: allotment_status,
         // allowed: false,

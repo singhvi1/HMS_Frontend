@@ -27,7 +27,7 @@ const LeaveForm = () => {
 
       console.log(form);
       dispatch(setLeave(res.data.leaveRequest));
-      navigate('/student/list');
+      navigate('/student/list', { replace: true, state: { tab: "leave" } });
     } catch (err) {
       console.error("Not able to create form", err.message);
     } finally {

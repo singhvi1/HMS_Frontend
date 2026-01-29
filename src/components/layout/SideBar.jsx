@@ -2,11 +2,12 @@ import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SideBarItem from "./SidebarItem";
 import { sidebarConfig } from "../common/sideBar.config";
+import React from "react";
 
 const SideBar = ({ isOpen, onClose, role }) => {
   const navigate = useNavigate();
   const items = sidebarConfig[role] || [];
-
+  console.log("side bar called")
   return (
     <>
       {isOpen && (
@@ -47,4 +48,4 @@ const SideBar = ({ isOpen, onClose, role }) => {
   );
 };
 
-export default SideBar;
+export default React.memo(SideBar);

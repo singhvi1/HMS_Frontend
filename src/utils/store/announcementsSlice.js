@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   list: [],
   listFetched: false,
+  error: null,
 };
 
 const announcementSlice = createSlice({
@@ -29,6 +30,17 @@ const announcementSlice = createSlice({
         state.list.push(action.payload);
       }
     },
+    updatefilesAnnouncement(state, action) {
+      const { id, files } = action.payload;
+      const index = state.list.findIndex(
+        (a) => a._id === id
+      );
+      console.log(state.list[index], "this is state list index announcemnt")
+      if (index !== -1) {
+        state.list[index].announcement_files = files;
+      }
+    },
+
     removeAnnouncement(state, action) {
       state.list = state.list.filter(
         (a) => a._id !== action.payload
@@ -43,7 +55,7 @@ export const {
   addAnnouncement,
   updateOneAnnouncement,
   removeAnnouncement,
-  resetAnnouncements
+  resetAnnouncements, updatefilesAnnouncement
 } = announcementSlice.actions;
 
 

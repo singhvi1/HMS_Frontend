@@ -3,11 +3,26 @@ import api from './api.js';
 export const announcementService = {
   createAnnouncement: (data) => api.post('/home/announcements', data),
 
+  uploadAnnouncementImages: (announcementId, files) => {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append("files", file);
+    });
+    return api.post(`home/announcements/upload/images/${announcementId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+  },
+  uploadAnnouncementFile: (announcementId, files) => {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append("files", file);
+    });
+    return api.post(`home/announcements/upload/pdfs/${announcementId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+  },
+
   getAllAnnouncements: () => api.get('/home/announcements'),
 
   getAnnouncementById: (id) => api.get(`/home/announcements/${id}`),
 
-  updateAnnouncement: (data, user_id) => api.patch(`/home/announcements/${user_id}`, data),
+  updateAnnouncement: (data, user_id,) => api.patch(`/home/announcements/${user_id}`, data,),
 
   deleteAnnouncement: (id) => api.delete(`/home/announcements/${id}`),
 };
@@ -28,6 +43,8 @@ export const studentService = {
   toogleStudentStatus: (user_id) => api.patch(`/students/status/${user_id}`,),
 
   downloadDocument: (id) => api.get(`/students/document/${id}`, { responseType: 'blob' }),
+
+  updateStudentProfile: (userId, file) => api.post(`/students/upload/profile/${userId}`, file),
 
   deleteStudent: (userId) => api.delete(`/students/${userId}`),
 };

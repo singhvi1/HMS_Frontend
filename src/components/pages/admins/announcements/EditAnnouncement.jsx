@@ -1,9 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { AnnouncementForm } from "../../../index";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAnnounceMentById, updateOneAnnouncement } from "../../../../utils/store/announcementsSlice";
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { selectAnnounceMentById, updatefilesAnnouncement, updateOneAnnouncement } from "../../../../utils/store/announcementsSlice";
 import { announcementService } from "../../../../services/apiService";
+import toast from "react-hot-toast";
+import AnnouncementForm from "../../../forms/AnnouncementForm";
 
 const EditAnnouncement = () => {
     const { id } = useParams();
@@ -12,7 +13,7 @@ const EditAnnouncement = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
 
-
+    // console.log(announcement)
 
     useEffect(() => {
         const resolve = async () => {
@@ -32,11 +33,14 @@ const EditAnnouncement = () => {
         }
     }, [announcement, dispatch, id]);
 
-    const handleUpdate = async (data) => {
+    const handleUpdate = async ({ payload, images, pdfs, removedFileIds }) => {
+        console.log(payload, images, pdfs, removedFileIds);
         try {
-            const res = await announcementService.updateAnnouncement(data, id);
+            setLoading(true);
+            const res = await announcementService.updateAnnouncement({ ...payload, removedFileIds }, id,);
             dispatch(updateOneAnnouncement(res.data.announcement))
-            navigate(`/admin/anns/${id}`)
+            toast.success("Announcement created successfully");
+            navigate(`/admin/anns/${id}`, { replace: true });
         } catch (err) {
             console.error("Not able to update announcement", err);
         } finally {

@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IssuesList from './IssuesList';
 import LeaveList from './LeaveList';
 import Button from '../../../common/ui/Button';
+import { useLocation } from 'react-router-dom';
 
 const List = ({ studentId }) => {
+    const location = useLocation();
     const [tab, setTab] = useState("issue")
 
+    useEffect(() => {
+        if (location.state?.tab) {
+            setTab(location.state.tab);
+        }
+    }, [location.state]);
     return (
         <>
             <div className="mt-6">

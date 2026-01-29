@@ -1,6 +1,4 @@
-
-
-/* Custom styles for dark mode */
+/* Custom styles for dark mode later on */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -53,6 +51,9 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: 'Inter', sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  font-family: "Inter", sans-serif;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
+

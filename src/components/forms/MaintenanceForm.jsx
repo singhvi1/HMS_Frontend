@@ -6,6 +6,7 @@ import BackButton from '../common/ui/Backbutton';
 import { issueService } from '../../services/apiService';
 import Button from '../common/ui/Button';
 import { Imp } from '../common/ui/ProfileComponents';
+import { useNavigate } from 'react-router-dom';
 
 const MaintenanceForm = () => {
   const [form, setForm] = useState({
@@ -14,11 +15,14 @@ const MaintenanceForm = () => {
     category: ""
   });
 
+  const navigate = useNavigate()
+
   const submitForm = async () => {
     try {
       const res = await issueService.createIssues(form);
       toast.success('Maintenance request submitted successfully!');
       setForm({ description: "", category: "", title: "" });
+      navigate('/student/list')
     } catch (err) {
       console.log("Not able to generate issue", err?.message);
       toast.error("Failed to submit request.");
@@ -36,7 +40,7 @@ const MaintenanceForm = () => {
   };
 
   // Shared input styles for consistency
-  const inputClasses = "w-full rounded-lg border border-gray-300 shadow-sm py-3 px-4 pl-10 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200";
+  const inputClasses = "w-full rounded-lg border border-gray-300 shadow-sm py-3 px-4 pl-10 outline-none focus:ring-2  text-red-500 focus:ring-blue-500 focus:border-transparent transition-all duration-200";
 
   return (
     <div className="max-w-3xl mx-auto"> {/* Added container for centering */}

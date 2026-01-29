@@ -8,3 +8,5 @@
 .input:focus {
   @apply outline-none ring-2 ring-indigo-400;
 }
+
+

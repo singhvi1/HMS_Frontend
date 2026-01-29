@@ -8,3 +8,16 @@ export const StatItem = ({ label, value }) => (
         </span>
     </div>
 );
+
+
+export const Imp = () => (
+
+    <span className="text-red-500!">*</span>
+)
+
+export const Tags = ({ categoryStyle, category }) => (
+    <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${categoryStyle}`}>
+        {category}
+    </span>
+
+)

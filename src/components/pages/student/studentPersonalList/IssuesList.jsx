@@ -84,25 +84,26 @@ const IssuesList = ({ studentId }) => {
                     <p className='text-sm text-gray-500'>Track and manage your room maintenance requests</p>
                 </div>
                 <RoleGuard allow={["student"]}>
-                <div className="flex items-center gap-3">
-                    <Button
-                        variant="text"
-                        className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
-                        onClick={() => dispatch(forceIssuesRefresh())}
-                        title="Refresh List"
-                    >
-                        <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
-                    </Button>
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="text"
+                            className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+                            onClick={() => dispatch(forceIssuesRefresh())}
+                            title="Refresh List"
+                        >
+                            <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
+                        </Button>
 
-                    <Button
-                        variant='success'
-                        className='flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg'
-                        onClick={() => navigate('/student/issues/new')}
-                    >
-                        <Plus size={18} />
-                        Raise Request
-                    </Button>
-                </div></RoleGuard>
+                        <Button
+                            variant='success'
+                            className='flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg'
+                            onClick={() => navigate('/student/issues/new')}
+                        >
+                            <Plus size={18} />
+                            Raise Request
+                        </Button>
+                    </div>
+                </RoleGuard>
             </div>
 
             {renderContent()}

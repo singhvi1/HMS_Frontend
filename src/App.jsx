@@ -32,7 +32,7 @@ const LeaveForm = lazy(() =>
 );
 
 const Announcements = lazy(() =>
-  import("./components/dashboard/AnnounceMents.jsx")
+  import("./components/common/announcements/AnnounceMents.jsx")
 );
 
 const NotFound = lazy(() =>
@@ -46,7 +46,7 @@ const CreateAnnouncement = lazy(() =>
   import("./components/pages/admins/announcements/CreateAnnouncement.jsx")
 );
 const AnnounceMentDetail = lazy(() =>
-  import("./components/dashboard/AnnounceMentDetail.jsx")
+  import("./components/common/announcements/AnnouncementDetail.jsx")
 );
 
 const EditAnnouncement = lazy(() =>
@@ -83,6 +83,8 @@ import { removeLoggedinUser, selectLoggedinUserAllState, setError, setLoggedinUs
 import { userService } from "./services/apiService";
 
 import toast from "react-hot-toast";
+import AnnounceMents from "./components/common/announcements/AnnounceMents.jsx";
+
 const AdminALlotment = lazy(() => import("./components/pages/admins/allotment/AdminALlotment.jsx"));
 
 const Allotment = lazy(() => import("./components/pages/admins/allotment/Allotment.jsx"));
@@ -121,7 +123,7 @@ function App() {
     fetchMe();
   }, [dispatch, loading]);
 
-  
+
 
 
   if (loading) {
@@ -155,8 +157,8 @@ function App() {
                 <Route path="list" element={<List />} />
                 <Route path="issues/:id" element={<AdminIssueProfile />} />
                 <Route path="issues/new" element={<MaintenanceForm />} />
-                <Route path="anns" element={<Announcements />} />
-                <Route path="anns/:id" element={<AnnounceMentDetail />} />
+                <Route path="anns" element={<AnnounceMents />} />
+                <Route path="anns/:id" element={<AnnouncementDetail />} />
                 <Route path="*" element={<NotFound />} />
 
               </Route>

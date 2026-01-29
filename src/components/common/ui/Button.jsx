@@ -8,13 +8,13 @@ const Button = ({
     className = ""
 }) => {
     const base =
-        "relative rounded font-medium transition disabled:opacity-60 disabled:cursor-not-allowed";
+        "relative rounded font-medium transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer";
 
     const variants = {
         primary: "bg-black text-white hover:bg-gray-900",
         secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200",
         tertiary: "bg-green-400 text-gray-800 hover:bg-green-500",
-        danger: "bg-red-600 text-white hover:bg-red-700",   
+        danger: "bg-red-600 text-white hover:bg-red-700",
         outline: "border border-gray-300 text-gray-700 hover:bg-gray-50",
         text: "",
         success: "bg-blue-600 text-white hover:bg-green-600",
@@ -25,7 +25,7 @@ const Button = ({
             type={type}
             onClick={onClick}
             disabled={disabled}
-            className={`${base} ${variants[variant]} ${className} group cursor-pointer `}
+            className={`${base} ${variants[variant]} ${className} group`}
         >
             {children}
 

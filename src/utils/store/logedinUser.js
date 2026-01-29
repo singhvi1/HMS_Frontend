@@ -31,6 +31,12 @@ export const { setLoggedinUser, removeLoggedinUser, setError } = loggedinUser.ac
 
 const selectLoggedinUserState = (state) => state.loggedinUser;
 
+export const selectLoggedinRole = createSelector(
+    [selectLoggedinUserState],
+    (loggedinUser) => loggedinUser?.user?.role
+)
+
+
 export const selectLoggedinUserAllState = createSelector(
     [selectLoggedinUserState],
     (loggedinUser) => ({

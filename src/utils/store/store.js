@@ -13,13 +13,13 @@ import verificationRequestReducer from "./verificationRequestSlice"
 
 const store = configureStore({
     reducer: {
+        announcements: announcementsSlice,
         verificationRequest: verificationRequestReducer,
         allotmentRooms: allotmentRoomsReducer,
         comments: commentReducers,
         studentProfile: studentProfileReducer,
         loggedinUser: loggedinUserReducer,
         hostel: hostelReducer,
-        announcements: announcementsSlice,
         students: studentReducer,
         rooms: roomsReducer,
         issues: issuesReducer,

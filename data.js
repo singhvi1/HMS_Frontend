@@ -46,6 +46,13 @@ export const initialForm = {
   yearly_rent: 7500,
 };
 
+export const mapFormToCreateAnnouncementPayload = (form = {}) => ({
+  title: (form.title ?? "").trim(),
+  message: (form.message ?? "").trim(),
+  category: (form.category ?? "").trim(),
+  notice_url: (form.notice_url ?? "").trim()
+})
+
 export const leaveForm = {
   leave_type: "",
   from_date: "",

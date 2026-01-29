@@ -29,8 +29,8 @@ const LeaveList = ({ studentId }) => {
             })
             dispatch(setLeaveList(res.data))
         } catch (err) {
-            console.log("Not able to fetch leave data", err?.message || err?.response?.data?.message)
-            dispatch(setLeaveError(err?.response?.data?.message || err?.message || "Error in fetching leaves"))
+            console.log(err?.response?.data?.message || "Not able to fetch leave data")
+            dispatch(setLeaveError(err?.response?.data?.message || "Error in fetching leaves"))
         }
     }, [dispatch, limit, page, studentId])
 

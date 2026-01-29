@@ -377,7 +377,7 @@ export const verificationRequestColumns = (navigate, verifyStudent) => [
                     className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
                     onClick={() => {
                         verifyStudent(row.student.user_id, "REJECTED")
-                        console.log("REJECT:", row.request_id);
+                        // console.log("REJECT:", row.request_id);
                     }}
                     disabled={row.verification_status !== "PENDING"}
                 >

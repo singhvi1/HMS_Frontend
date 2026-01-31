@@ -28,6 +28,25 @@ export const getFloorLabel = (n) => {
   if (j === 3 && k !== 13) return `${floor}rd Floor`;
   return `${floor}th Floor`;
 };
+export const toFormData = (data) => {
+  const formData = new FormData();
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    }
+    else if (typeof value === "object") {
+      formData.append(key, JSON.stringify(value));
+    }
+    else {
+      formData.append(key, value);
+    }
+  });
+
+  return formData;
+};
 
 //later update it 
 export const initialForm = {
@@ -37,15 +56,63 @@ export const initialForm = {
   password: "",
   sid: "",
   branch: "",
+  file: null,
+
   permanent_address: "",
   guardian_name: "",
-  guardian_contact: "",
+  guardian_contact: "9902455152",
+  verificationIds: {
+    studentId: {
+      idType: "",
+      idValue: ""
+    },
+    guardianId: {
+      idType: "",
+      idValue: ""
+    },
+    paymentId: {
+      idType: "",
+      idValue: ""
+    }
+  },
   block: "",
   room_number: "",
   capacity: "1",
   yearly_rent: 7500,
 };
+export const mapRoomToForm = (room) => ({
+  block: room?.block || "",
+  room_number: room?.room_number || "",
+  capacity: room?.capacity || "1",
+});
+export const mapStudentToForm = (student) => ({
+  full_name: student?.user_id?.full_name || "",
+  email: student?.user_id?.email || "",
+  phone: student?.user_id?.phone || "",
+  sid: student?.sid || "",
+  file: student?.profile_photo || null,
+  verificationIds: student?.verificationIds || {},
+  branch: student?.branch || "",
+  permanent_address: student?.permanent_address || "",
+  guardian_name: student?.guardian_name || "",
+  guardian_contact: student?.guardian_contact || "",
+  block: student?.room_id?.block || "",
+  room_number: student?.room_id?.room_number || "",
+  capacity: student?.room_id?.capacity || "1",
+});
 
+export const mapFormToAllotmentPayload = (form) => ({
+  full_name: form.full_name,
+  email: form.email,
+  phone: form.phone,
+  password: form.password,
+
+  sid: form.sid,
+  branch: form.branch,
+  permanent_address: form.permanent_address,
+  guardian_name: form.guardian_name,
+  guardian_contact: form.guardian_contact,
+});
 export const mapFormToCreateAnnouncementPayload = (form = {}) => ({
   title: (form.title ?? "").trim(),
   message: (form.message ?? "").trim(),
@@ -68,6 +135,8 @@ export const mapFormToCreateStudentPayload = (form = {}) => ({
   phone: (form.phone ?? "").toString().trim(),
   password: form.password ?? "",
   role: "student",
+  verificationIds: form.verificationIds || {},
+  file: form.file || null,
 
   sid: (form.sid ?? "").trim(),
   branch: (form.branch ?? "").trim(),

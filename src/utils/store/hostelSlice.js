@@ -5,7 +5,7 @@ const hostelSlice = createSlice({
     initialState: {
         data: null,
         loading: true,
-        allotmentLoading: false,
+        allotmentLoading: true,
         error: null,
     },
     reducers: {
@@ -33,14 +33,17 @@ const hostelSlice = createSlice({
         setAllotment: (state, action) => {
             if (!state.data) state.data = {};
             state.data.allotment_status = action.payload;
-            state.loading = true;   
             state.allotmentLoading = false;
             state.error = null;
-        }
+        },
+        setAllotmentError: (state, action) => {
+            state.error = action.payload;
+            state.allotmentLoading = false;
+        },
 
     }
 })
-export const { setHostel, setAllotment, clearHostel, setError, setLoading, setAllotmentLoading } = hostelSlice.actions;
+export const { setHostel, setAllotment, clearHostel, setError, setLoading, setAllotmentLoading, setAllotmentError } = hostelSlice.actions;
 
 
 const selectHostelState = (state) => state.hostel;
@@ -49,14 +52,15 @@ export const selectAllHostelState = createSelector(
     [selectHostelState],
     (hostel) => ({
         data: hostel?.data,
-        allotment_status: hostel?.data?.allotment_status,
-        loading: hostel?.loading,
+        allotment_status: hostel?.data?.allotment_status ?? null,
+        loading: hostel?.loading ?? false,
         allotmentLoading: hostel?.allotmentLoading,
         error: hostel?.error,
     })
 )
 
 export const selectHostelAllotment = (state) => selectHostelState(state).data?.allotment_status ?? null;
+
 
 
 export default hostelSlice.reducer;

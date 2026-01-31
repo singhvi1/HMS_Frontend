@@ -1,3 +1,4 @@
+import { toFormData } from '../../data.js';
 import api from './api.js';
 
 export const announcementService = {
@@ -10,6 +11,7 @@ export const announcementService = {
     });
     return api.post(`home/announcements/upload/images/${announcementId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
   },
+
   uploadAnnouncementFile: (announcementId, files) => {
     const formData = new FormData();
     files.forEach(file => {
@@ -28,8 +30,11 @@ export const announcementService = {
 };
 
 export const studentService = {
-  createUserStudent: (data) => api.post("/students/create", data),
 
+  createUserStudent: (data) => {
+    const payload = toFormData(data);
+    return api.post(`/students/create`, payload);
+  },
   createStudent: (data) => api.post(`/students`, data),
 
   getAllStudents: (params) => api.get('/students/getall', { params }),
@@ -38,13 +43,22 @@ export const studentService = {
 
   getStudent: () => api.get(`/students/profile`),
 
-  updateStudent: (user_id, data) => api.patch(`/students/edit/${user_id}`, data),
+  updateStudent: (user_id, data) => {
+    const payload = toFormData(data)
+
+    return api.patch(`/students/edit/${user_id}`, payload);
+  },
+
 
   toogleStudentStatus: (user_id) => api.patch(`/students/status/${user_id}`,),
 
   downloadDocument: (id) => api.get(`/students/document/${id}`, { responseType: 'blob' }),
 
-  updateStudentProfile: (userId, file) => api.post(`/students/upload/profile/${userId}`, file),
+  updateStudentProfile: (userId, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post(`/students/upload/profile/${userId}`, formData)
+  },
 
   deleteStudent: (userId) => api.delete(`/students/${userId}`),
 };

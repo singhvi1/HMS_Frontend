@@ -3,12 +3,7 @@ import { BackButton } from "../index";
 import { CATEGORIES } from "../../utils/constant";
 import { mapFormToCreateAnnouncementPayload } from "../../../data";
 import { Imp } from "../common/ui/Helper";
-import {
-  Type,
-  AlignLeft,
-  Link as LinkIcon,
-  Layers
-} from "lucide-react";
+import { Type, AlignLeft, Link as LinkIcon, Layers } from "lucide-react";
 import { AnnouncementImageUpload, AnnouncementPdfUpload } from "../common/announcements/AnnouncementUpload";
 
 
@@ -25,11 +20,7 @@ const AnnouncementForm = ({ initialData, onSubmit, loading, isEdit }) => {
   const [pdfs, setPdfs] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [removedFileIds, setRemovedFileIds] = useState([]);
-  useEffect(() => {
-    console.log(images, "this is images , from Announcement form")
-    console.log(imagePreviews, "this is imagePreviews from Announcement form")
-    console.log(removedFileIds, "this is removedFileIds from Announcement form")
-  }, [images, imagePreviews, removedFileIds])
+
   useEffect(() => {
     if (initialData) {
       setFormData({

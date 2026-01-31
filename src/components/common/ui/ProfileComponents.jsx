@@ -38,7 +38,7 @@ export const ProfileHeader = ({ student, InfoItem }) => (
         <div className="p-8 md:flex items-start gap-10">
             <div className="relative group shrink-0 mb-6 md:mb-0">
                 <ProfileAvatar image_url={student?.image_url || "	https://avatars.githubusercontent.com/u/120703712?v=4"}
-                    size={220} />
+                    size={220} userId={student?.user_id?._id} />
 
             </div>
 

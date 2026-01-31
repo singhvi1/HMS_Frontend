@@ -7,48 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectStudentByUserId, setStudent, } from "../../utils/store/studentSlice";
 import { setStudent as setStudentProfile } from "../../utils/store/studentProfile"
 import { selectRoomById } from "../../utils/store/roomsSlice";
-import { mapFormToCreateStudentPayload } from "../../../data";
+import { mapFormToAllotmentPayload, mapFormToCreateStudentPayload, mapRoomToForm, mapStudentToForm } from "../../../data";
 import { initialForm } from "../../../data";
 import { selectAllotedRoomById } from "../../utils/store/allotmentRoom";
 import { setLoggedinUser } from "../../utils/store/logedinUser";
+import { Imp } from "../common/ui/Helper";
 
-const mapRoomToForm = (room) => ({
-    block: room?.block || "",
-    room_number: room?.room_number || "",
-    capacity: room?.capacity || "1",
-});
 
-const mapStudentToForm = (student) => ({
-    full_name: student?.user_id?.full_name || "",
-    email: student?.user_id?.email || "",
-    phone: student?.user_id?.phone || "",
-    sid: student?.sid || "",
-    branch: student?.branch || "",
-    permanent_address: student?.permanent_address || "",
-    guardian_name: student?.guardian_name || "",
-    guardian_contact: student?.guardian_contact || "",
-    block: student?.room_id?.block || "",
-    room_number: student?.room_id?.room_number || "",
-    capacity: student?.room_id?.capacity || "1",
-});
-const mapFormToAllotmentPayload = (form) => ({
-    full_name: form.full_name,
-    email: form.email,
-    phone: form.phone,
-    password: form.password,
-
-    sid: form.sid,
-    branch: form.branch,
-    permanent_address: form.permanent_address,
-    guardian_name: form.guardian_name,
-    guardian_contact: form.guardian_contact,
-});
 
 const CreateStudent = ({ studentId }) => {
     const isEdit = Boolean(studentId);
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const [form, setForm] = useState(initialForm);
     const [searchParams] = useSearchParams()
     const roomId = searchParams.get("roomId")
     const isAllotmentA = location.pathname.includes("phase-a");
@@ -56,6 +26,8 @@ const CreateStudent = ({ studentId }) => {
     const roomByStore = useSelector(selectRoomById(roomId))
     const allotedRoomByStore = useSelector(selectAllotedRoomById(roomId))
     // console.log(allotedRoomByStore)
+
+    const [form, setForm] = useState(initialForm);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const studentFromStore = useSelector(selectStudentByUserId(studentId))
@@ -158,7 +130,7 @@ const CreateStudent = ({ studentId }) => {
                 const res = await studentService.updateStudent(studentId, updatedPayload);
                 dispatch(setStudent(res.data.student))
                 toast.success("Student Updated Successfully")
-                navigate(`/admin/students/${res.data.student.user_id._id}`);
+                navigate(`/admin/students/${res.data.student.user_id._id}`, { replace: true });
 
             } else if (isAllotmentA) {
                 const payload = {
@@ -189,7 +161,6 @@ const CreateStudent = ({ studentId }) => {
 
             }
             else {
-                console.log("hited not ")
                 const payload = {
                     ...mapFormToCreateStudentPayload(form),
                     ...(roomId && { roomId })
@@ -199,8 +170,8 @@ const CreateStudent = ({ studentId }) => {
                     throw new Error(res.data?.message || "Student creation failed");
                 }
                 dispatch(setStudent(res.data.data.student));
-                alert("Student created successfully");
-                navigate(`/admin/students/${res.data.data.student.user_id._id}`);
+                toast.success("Student created successfully");
+                navigate(`/admin/students/${res.data.data.student.user_id._id}`, { replace: true });
             }
         } catch (err) {
             setError(err?.response?.data?.message || "Something went wrong");
@@ -212,8 +183,28 @@ const CreateStudent = ({ studentId }) => {
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
+        const { name, value, type, files } = e.target;
+        const val = type === "file" ? files[0] : value;
+        // setForm(prev => ({ ...prev, [name]: value }));
+
+        if (name.includes(".")) {
+            const [parent, child, grandChild] = name.split(".");
+
+            setForm(prev => ({
+                ...prev,
+                [parent]: {
+                    ...prev[parent],
+                    [child]: {
+                        ...prev[parent]?.[child],
+                        [grandChild]: val
+                    }
+                }
+            }));
+
+        } else {
+            // Normal flat update
+            setForm(prev => ({ ...prev, [name]: val }));
+        }
     };
 
 
@@ -227,7 +218,7 @@ const CreateStudent = ({ studentId }) => {
             <form onSubmit={handleSubmit} className={`space-y-6 ${loading ? "opacity-70 pointer-events-none" : ""}`}>
 
                 <section>
-                    <h2 className="font-semibold text-lg mb-3">Account Details</h2>
+                    <h2 className="font-semibold text-lg mb-3">Account Details <Imp /> </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -241,9 +232,18 @@ const CreateStudent = ({ studentId }) => {
 
                     </div>
                 </section>
-
                 <section>
-                    <h2 className="font-semibold text-lg mb-3">Student Information</h2>
+                    <h2 className="font-semibold text-lg mb-3">Profile Picture <Imp /></h2>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        name="file"
+                        onChange={handleChange}
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 hover:file:bg-blue-100"
+                    />
+                </section>
+                <section>
+                    <h2 className="font-semibold text-lg mb-3">Student Information <Imp /></h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input name="sid" placeholder="Student ID" required onChange={handleChange} value={form.sid} className="input" />
 
@@ -266,8 +266,101 @@ const CreateStudent = ({ studentId }) => {
                     />
                 </section>
 
+                <div className="space-y-6">
+                    <section>
+                        <h1 className="font-semibold text-lg mb-3">Identity Verification <Imp /></h1>
+
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Student Identity</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <select
+                                name="verificationIds.studentId.idType"
+                                value={form.verificationIds?.studentId?.idType || ""}
+                                onChange={handleChange}
+                                className="input"
+                            >
+                                <option value="" disabled>Select ID Type</option>
+                                <option value="AADHAAR">Addhar Number</option>
+                                <option value="PAN">Pan Number</option>
+                                <option value="VOTER_ID">Voter ID</option>
+                                <option value="PASSPORT">Passport</option>
+                            </select>
+
+                            <input
+                                name="verificationIds.studentId.idValue"
+                                value={form.verificationIds?.studentId?.idValue || ""}
+                                placeholder="ID Number (e.g., Aadhaar/PAN)"
+                                required
+                                onChange={handleChange}
+                                className="input"
+                            />
+                        </div>
+
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Guardian Details </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <select
+                                name="verificationIds.guardianId.idType"
+                                value={form.verificationIds?.guardianId?.idType || ""}
+                                onChange={handleChange}
+                                className="input"
+                            >
+                                <option value="x" disabled>Select Guardian ID Type</option>
+                                <option value="AADHAAR">Addhar Number</option>
+                                <option value="PAN">Pan Number</option>
+                                <option value="VOTER_ID">Voter ID</option>
+                                <option value="PASSPORT">Passport</option>
+
+                            </select>
+
+                            <input
+                                name="verificationIds.guardianId.idValue"
+                                placeholder="Guardian ID Number"
+                                required
+                                onChange={handleChange}
+                                value={form.verificationIds?.guardianId?.idValue || ""}
+                                className="input"
+                            />
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 className="font-semibold text-lg mb-3 border-t pt-4 mt-4">Payment Verification <Imp /></h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                            <select
+                                name="verificationIds.paymentId.idType"
+                                value={form.verificationIds?.paymentId?.idType || ""}
+                                onChange={handleChange}
+                                className="input"
+                            >
+                                <option value="" disabled>Select Payment Mode</option>
+                                <option value="UPI">UPI</option>
+                                <option value="BANK_TXN">Via Bank Transaction</option>
+                                <option value="CHEQUE">Cheque</option>
+
+                            </select>
+
+                            <input
+                                name="verificationIds.paymentId.idValue"
+                                placeholder="Transaction ID / Cheque No."
+                                required
+                                onChange={handleChange}
+                                value={form.verificationIds?.paymentId?.idValue || ""}
+                                className="input"
+                            />
+
+                            {/* <input
+                                name="verificationIds.paymentId.amount"
+                                placeholder="Amount Paid"
+                                type="number"
+                                onChange={handleChange}
+                                value={form.verificationIds?.paymentId?.amount || ""}
+                                className="input"
+                            /> */}
+                        </div>
+                    </section>
+                </div>
                 {!isAllotmentB && <section>
-                    <h2 className="font-semibold text-lg mb-3">Room Assignment</h2>
+                    <h2 className="font-semibold text-lg mb-3">Room Assignment <Imp /></h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <select name="block" onChange={handleChange} value={form.block} className="input" required>
                             <option value="">Select Block</option>

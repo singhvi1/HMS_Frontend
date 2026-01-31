@@ -33,9 +33,10 @@ const ProfileHeader = ({ student }) => {
 
                         <div className="-mt-12 relative rounded-full border-4 border-white shadow-md bg-white">
                             <ProfileAvatar
-                                image_url={student?.image_url || "https://avatars.githubusercontent.com/u/120703712?v=4"}
+                                image_url={student?.profile_photo?.url ?? "https://avatars.githubusercontent.com/u/120703712?v=4"}
                                 name={student?.user_id?.full_name}
                                 size={180}
+                                userId={student?.user_id?._id}
                             />
                         </div>
 
@@ -90,7 +91,6 @@ const ProfileHeader = ({ student }) => {
                                     value={room}
                                 />
 
-                                {/* Row 2 */}
                                 <DetailItem
                                     icon={User}
                                     label="Guardian Name"
@@ -106,6 +106,21 @@ const ProfileHeader = ({ student }) => {
                                     icon={MapPin}
                                     label="Permanent Address"
                                     value={student?.permanent_address}
+                                />
+                                <DetailItem
+                                    icon={File}
+                                    label={`PaymentId by  ${student?.verificationIds?.paymentId?.idType || ""}`}
+                                    value={student?.verificationIds?.paymentId?.idValue || "Not Provided"}
+                                />
+                                <DetailItem
+                                    icon={File}
+                                    label={`StudentId (${student?.verificationIds?.studentId?.idType || ""})`}
+                                    value={student?.verificationIds?.studentId?.idValue || "Not Provided"}
+                                />
+                                <DetailItem
+                                    icon={File}
+                                    label={`GuardianId (${student?.verificationIds?.guardianId?.idType || ""})`}
+                                    value={student?.verificationIds?.guardianId?.idValue || "Not Provided"}
                                 />
                                 <DetailItem
                                     icon={File}

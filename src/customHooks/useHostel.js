@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { allotmentService, hostelService } from "../services/apiService";
-import { selectAllHostelState, setError, setHostel } from "../utils/store/hostelSlice";
+import { selectAllHostelState, setAllotmentError, setError, setHostel } from "../utils/store/hostelSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectHostelAllotment, setAllotment, setAllotmentLoading } from '../utils/store/hostelSlice';
 import { getNextAllotmentStatus } from '../../data';
@@ -102,36 +102,36 @@ export const useToggleAllotment = (hostelId) => {
 
 export const useAllotmentStatus = () => {
     const dispatch = useDispatch();
-    const allotment_status= useSelector(selectHostelAllotment)
+    const { allotmentLoading, allotment_status } = useSelector(selectAllHostelState)
     // console.log(allotment_status, "  found in store");
-    const [loading, setLoading] = useState(false)
 
 
     const findAllotmentStatus = useCallback(async () => {
         try {
-            setLoading(true)
             const res = await
                 allotmentService.getAllotmentStatus()
             const status = res.data?.data?.hostel?.allotment_status
             dispatch(setAllotment(status))
         } catch (err) {
             console.error("Status update failed", err);
+            dispatch(setAllotmentError(err.response?.data.message || "failed to fetch allotment status"))
         } finally {
-            setLoading(false);
+            setAllotmentLoading(false);
         }
 
     }, [dispatch])
 
     useEffect(() => {
-        if (allotment_status == null && !loading) {
+        if (allotmentLoading) {
             findAllotmentStatus();
         }
-    }, [allotment_status, findAllotmentStatus, loading])
+    }, [allotmentLoading, allotment_status, findAllotmentStatus])
+    
     const allotmentInfo = {
         status: allotment_status,
         // allowed: false,
         allowed: allotment_status === "PHASE_A" || allotment_status === "PHASE_B"
     };
 
-    return { allotmentInfo, loading };
+    return { allotmentInfo, setAllotmentLoading };
 }

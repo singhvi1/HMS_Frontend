@@ -1,4 +1,4 @@
-import { Image as ImageIcon, FileText, X, Trash2, CloudCog } from "lucide-react";
+import { Image as ImageIcon, FileText, X, Trash2 } from "lucide-react";
 import FileDropzone from "../ui/FileDropzone.jsx";
 import Button from "../ui/Button.jsx";
 import { useEffect } from "react";

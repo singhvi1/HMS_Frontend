@@ -76,6 +76,14 @@ const studentsSlice = createSlice({
         toast.error("No student Found ")
       }
     },
+    setStudentProfilePhoto: (state, action) => {
+      if (!state.items) return;
+      const { user_id, profile_photo } = action.payload;
+      const index = state.items.findIndex(s => s.user_id?._id === user_id)
+      if (index !== -1) {
+        state.items[index].profile_photo = profile_photo;
+      }
+    },
     removeStudent: (state, action) => {
       const user_id = action.payload;
       state.items = state?.items?.filter(s => s.user_id?._id.toString() !== user_id);
@@ -122,6 +130,7 @@ export const {
   setStudentsPageSize,
   setStudentStatus,
   setStudentVerificationStatus,
+  setStudentProfilePhoto,
   removeStudent,
   setStudentError,
   forceStudentRefresh,

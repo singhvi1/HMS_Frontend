@@ -34,7 +34,17 @@ const LeaveForm = lazy(() =>
 const Announcements = lazy(() =>
   import("./components/common/announcements/AnnounceMents.jsx")
 );
+const CreateAnnouncement = lazy(() =>
+  import("./components/pages/admins/announcements/CreateAnnouncement.jsx")
+);
 
+const AnnounceMentDetail = lazy(() =>
+  import("./components/common/announcements/AnnounceMentDetail.jsx")
+);
+
+const EditAnnouncement = lazy(() =>
+  import("./components/pages/admins/announcements/EditAnnouncement.jsx")
+);
 const NotFound = lazy(() =>
   import("./components/NotFound.jsx")
 );
@@ -42,16 +52,7 @@ const NotFound = lazy(() =>
 const AdminHome = lazy(() =>
   import("./components/pages/admins/AdminHome.jsx")
 );
-const CreateAnnouncement = lazy(() =>
-  import("./components/pages/admins/announcements/CreateAnnouncement.jsx")
-);
-const AnnounceMentDetail = lazy(() =>
-  import("./components/common/announcements/AnnouncementDetail.jsx")
-);
 
-const EditAnnouncement = lazy(() =>
-  import("./components/pages/admins/announcements/EditAnnouncement.jsx")
-);
 const CreateStudent = lazy(() =>
   import("./components/forms/CreateStudent.jsx")
 );
@@ -83,7 +84,7 @@ import { removeLoggedinUser, selectLoggedinUserAllState, setError, setLoggedinUs
 import { userService } from "./services/apiService";
 
 import toast from "react-hot-toast";
-import AnnounceMents from "./components/common/announcements/AnnounceMents.jsx";
+
 
 const AdminALlotment = lazy(() => import("./components/pages/admins/allotment/AdminALlotment.jsx"));
 

@@ -1,8 +1,8 @@
 import { Bell, Megaphone } from 'lucide-react';
 import Topbar from './layout/Topbar.jsx';
 import NavBar from './layout/NavBar.jsx';
-import AnnounceMents from './dashboard/AnnounceMents.jsx';
 import { useSelector } from 'react-redux';
+import AnnounceMents from './common/announcements/AnnounceMents.jsx';
 
 const Home = () => {
   const loogedinUser = useSelector((state) => state.loggedinUser)

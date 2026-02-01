@@ -2,6 +2,7 @@ import { Menu, LogOut, Home } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../customHooks/useLogout";
+import Button from "../common/ui/Button";
 
 const NavBar = ({ onMenuClick }) => {
   const user = useSelector((state) => state.loggedinUser);
@@ -15,12 +16,13 @@ const NavBar = ({ onMenuClick }) => {
 
           {/* Left */}
           <div className="flex items-center gap-3">
-            <button
+            <Button
+              variant="text"
               onClick={onMenuClick}
               className="md:hidden p-2 hover:bg-indigo-700 rounded-md"
             >
               <Menu />
-            </button>
+            </Button>
 
             <Link to="/" className="flex items-center gap-2">
               <Home className="w-6 h-6" />

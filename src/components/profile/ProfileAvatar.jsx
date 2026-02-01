@@ -1,6 +1,7 @@
 import { Camera, User } from "lucide-react";
 import { useState, useRef } from "react";
 import useUploadProfilePhoto from "../../customHooks/useUploadProfilePhoto.js";
+import { useEffect } from "react";
 
 
 const ProfileAvatar = ({ image_url, name = "", size = 36, userId }) => {
@@ -9,6 +10,11 @@ const ProfileAvatar = ({ image_url, name = "", size = 36, userId }) => {
   const [imgError, setImgError] = useState(false);
   const fileRef = useRef(null);
   const { uploading, uploadProfilePhoto } = useUploadProfilePhoto();
+
+
+  useEffect(() => {
+    setImgError(false);
+  }, [image_url]);
 
   const showImage = image_url && !imgError;
 
@@ -32,6 +38,7 @@ const ProfileAvatar = ({ image_url, name = "", size = 36, userId }) => {
     >
       {showImage ? (
         <img
+          key={image_url}
           src={image_url}
           alt={name}
           className="md:w-full md:h-full object-cover"

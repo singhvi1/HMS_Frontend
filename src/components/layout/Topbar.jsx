@@ -2,7 +2,7 @@ import { LogOut, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../profile/ProfileAvatar";
 import { useDispatch } from "react-redux";
-import { removeLoggedinUser } from "../../utils/store/logedinUser";
+import { removeLoggedinUser, selectLoggedinUserAllState } from "../../utils/store/logedinUser";
 import { authService } from "../../services/apiService";
 import { removeAnnouncement } from "../../utils/store/announcementsSlice";
 import { clearHostel } from "../../utils/store/hostelSlice";
@@ -11,11 +11,14 @@ import { resetRoomSlice } from "../../utils/store/roomsSlice";
 import { resetLeaveSlice } from "../../utils/store/leaveSlice";
 import { resetIssuesSlice } from "../../utils/store/issuesSlice";
 import { reSetStudent } from "../../utils/store/studentProfile";
+import { PecLogo } from "../common/ui/Helper";
+import Button from "../common/ui/Button";
 
-const Topbar = ({ user }) => {
+const Topbar = ({ user, url }) => {
   const dispatch = useDispatch();
+  console.log(user, url)
   const handleLogout = async () => {
-    const res = await authService.logoutUser();
+    await authService.logoutUser();
     dispatch(removeAnnouncement(null));
     dispatch(clearHostel(null));
     dispatch(resetIssuesSlice());
@@ -27,38 +30,56 @@ const Topbar = ({ user }) => {
   };
 
   return (
-    <div className="hidden md:flex bg-linear-to-r from-indigo-600 to-blue-500 text-white shadow px-6 py-4 items-center justify-between">
+    <div className="hidden md:flex bg-linear-to-r from-blue-700 to-indigo-800 text-white shadow-lg px-8 py-4 items-center justify-between">
 
-      {/* Left: Logo */}
-      <Link to="/" className="flex items-center gap-2">
-        <Home className="w-6 h-6" />
-        <span className="font-bold text-xl">HMS</span>
+      {/* Left: Branding */}
+      <Link to="/" className="flex items-center gap-4 group">
+        {/* Logo Container: White background ensures PEC logo is always visible */}
+        <div className=" group-hover:scale-105 transition-transform duration-200">
+          <PecLogo size="large" />
+        </div>
+
+        <div className="flex flex-col border-l border-white/20 pl-4">
+          <span className="text-xl font-bold tracking-tight text-white leading-tight">
+            Punjab Engineering College
+          </span>
+          <span className="text-[10px] uppercase tracking-widest text-blue-100/80 font-semibold">
+            Deemed to be University
+          </span>
+        </div>
       </Link>
 
-      {/* Right */}
-      <div className="flex items-center gap-5">
-        {/* Avatar */}
-        <ProfileAvatar
-          image_url={user?.image_url}
-          name={user?.full_name}
-          size={36}
-        />
+      {/* Right: User Section */}
+      <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
+          <ProfileAvatar
+            image_url={url}
+            name={user?.full_name}
+            size={32}
+            className="border border-white/40"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-white">
+              {user?.full_name || "User"}
+            </span>
+            <span className="text-[9px] uppercase font-bold text-blue-200">{user?.role}</span>
+          </div>
+        </div>
 
-        {/* Name */}
-        <span className="font-medium">
-          {user?.full_name || "User"}
-        </span>
-
-        {/* Logout */}
-        {user && <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 text-sm bg-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700"
-        >
-          <LogOut size={16} />
-          Logout
-        </button>}
+        {user && (
+          <Button
+            variant="text"
+            title={"logout"}
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-sm font-bold bg-white text-indigo-700 px-5 py-2 rounded-lg hover:bg-blue-50 transition-colors shadow-md active:transform active:scale-95"
+          >
+            <LogOut size={16} />
+            Logout
+          </Button>
+        )}
       </div>
     </div>
+
   );
 };
 

@@ -15,6 +15,7 @@ import PageLoader from '../../../../common/PageLoader'
 import { RefreshCcw } from 'lucide-react'
 import { useAllotmentStatus } from '../../../../../customHooks/useAllotment'
 import useVerificationStatus from '../../../../../customHooks/useVerification'
+import ExcelDownloadButton from '../../../../common/ui/downloadbutton/ExcelDownloadButton'
 
 
 const StudentList = () => {
@@ -86,9 +87,9 @@ const StudentList = () => {
                 <BackButton />
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex gap-1 items-center-safe">
-                        <h2 className="text-xl font-semibold text-gray-800">
-                            Student List
+                        <h2 className="text-xl font-semibold text-gray-800">Student List
                         </h2>
+                        <ExcelDownloadButton type={"studentwise"} />
                         <Button
                             variant="text"
                             className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"

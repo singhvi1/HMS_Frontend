@@ -7,8 +7,12 @@ import { issueService } from '../../services/apiService';
 import Button from '../common/ui/Button';
 import { Imp } from '../common/ui/ProfileComponents';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setIssue } from '../../utils/store/issuesSlice';
 
 const MaintenanceForm = () => {
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -21,10 +25,12 @@ const MaintenanceForm = () => {
     try {
       const res = await issueService.createIssues(form);
       toast.success('Maintenance request submitted successfully!');
-      setForm({ description: "", category: "", title: "" });
-      navigate('/student/list')
+      // setForm({ description: "", category: "", title: "" });
+      console.log(res.data.issue);
+      dispatch(setIssue(res.data?.issue));
+      navigate('/student/list', { replace: true })
     } catch (err) {
-      console.log("Not able to generate issue", err?.message);
+      console.log("Not able to generate issue", err);
       toast.error("Failed to submit request.");
     }
   };
@@ -40,7 +46,7 @@ const MaintenanceForm = () => {
   };
 
   // Shared input styles for consistency
-  const inputClasses = "w-full rounded-lg border border-gray-300 shadow-sm py-3 px-4 pl-10 outline-none focus:ring-2  text-red-500 focus:ring-blue-500 focus:border-transparent transition-all duration-200";
+  const inputClasses = "w-full rounded-lg border border-gray-300 shadow-sm py-3 px-4 pl-10 outline-none focus:ring-2  focus:ring-blue-500 focus:border-transparent transition-all duration-200";
 
   return (
     <div className="max-w-3xl mx-auto"> {/* Added container for centering */}
@@ -75,9 +81,10 @@ const MaintenanceForm = () => {
               >
                 <option value="">Select Category</option>
                 <option value="plumbing">Plumbing</option>
-                <option value="electrical">Electrical</option>
+                <option value="electricity">Electrical</option>
                 <option value="furniture">Furniture</option>
                 <option value="cleaning">Cleaning</option>
+                <option value="drinking-water">Drinking Water</option>
                 <option value="other">Other</option>
               </select>
               <Tool className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />

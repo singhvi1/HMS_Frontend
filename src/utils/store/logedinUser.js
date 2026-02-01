@@ -29,7 +29,7 @@ const loggedinUser = createSlice({
 export const { setLoggedinUser, removeLoggedinUser, setError } = loggedinUser.actions;
 
 
-const selectLoggedinUserState = (state) => state.loggedinUser;
+const selectLoggedinUserState = (state) => state?.loggedinUser;
 
 export const selectLoggedinRole = createSelector(
     [selectLoggedinUserState],
@@ -40,9 +40,9 @@ export const selectLoggedinRole = createSelector(
 export const selectLoggedinUserAllState = createSelector(
     [selectLoggedinUserState],
     (loggedinUser) => ({
-        user: loggedinUser.user,
-        loading: loggedinUser.loading,
-        error: loggedinUser.error,
+        user: loggedinUser?.user,
+        loading: loggedinUser?.loading,
+        error: loggedinUser?.error,
         id: loggedinUser?.user?._id,
         full_name: loggedinUser?.user?.full_name,
         email: loggedinUser?.user?.email,

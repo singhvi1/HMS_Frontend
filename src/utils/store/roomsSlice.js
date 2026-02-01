@@ -81,6 +81,7 @@ export const {
 } = roomsSlice.actions;
 
 const selectRoomState = (state) => state?.rooms;
+
 export const selectAllRoomState = createSelector(
   [selectRoomState],
   (rooms) => ({

@@ -117,5 +117,15 @@ export const categoryColorMap = {
 };
 
 
+export const FILE_NAMES = {
+  accountants: "accountant-payments.xlsx",
+  studentwise: "student-wise-allotment.xlsx",
+  roomwise: "room-wise.xlsx",
+};
 
+export const TITLES = {
+  accountants: "Download Accountant Excel",
+  studentwise: "Download Student-wise Excel",
+  roomwise: "Download Room-wise Excel",
+};
 

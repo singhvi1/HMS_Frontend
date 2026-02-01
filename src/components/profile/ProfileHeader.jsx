@@ -2,6 +2,7 @@ import { Mail, Phone, MapPin, Building2, User, PhoneCall, Hash, Info, File } fro
 import ProfileAvatar from './ProfileAvatar';
 import { StatusBadge } from '../common/ui/ProfileComponents';
 import DownloadButton from '../common/ui/DownloadButton';
+import { Link } from 'react-router-dom';
 
 
 const ProfileHeader = ({ student }) => {
@@ -22,10 +23,12 @@ const ProfileHeader = ({ student }) => {
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 
                 <div className="h-32 bg-linear-to-r from-indigo-600 to-blue-500 relative p-2">
-                    <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-medium border border-white/30">
-                        Student Portal
+                    <Link to="https://pec.edu.in/user-profile" target="_blank" rel="noopener noreferrer">
+                        <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-medium border border-white/30">
+                            Student Portal
 
-                    </div>
+                        </div>
+                    </Link>
                 </div>
 
                 <div className="px-8 pb-8">

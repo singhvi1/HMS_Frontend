@@ -175,3 +175,7 @@ export const allotmentService = {
 
   verification: (status, studentUserId) => api.patch(`/allotment/${studentUserId}/verify`, { status })
 }
+
+export const excelService = {
+  getExcel: (type) => api.get(`/students/export/${type}`, { responseType: 'blob' }),
+}

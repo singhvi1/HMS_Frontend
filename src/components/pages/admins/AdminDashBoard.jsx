@@ -22,7 +22,7 @@ const AdminDashBoard = () => {
       <NavBar onMenuClick={onOpen} />
 
       {/* Desktop TopBar */}
-      <Topbar user={loggedinUser} />
+      <Topbar user={loggedinUser?.user} />
 
       <div className="flex">
         <SideBar

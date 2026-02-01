@@ -31,7 +31,7 @@ const LeaveForm = lazy(() =>
   import("./components/forms/LeaveForm.jsx")
 );
 
-const Announcements = lazy(() =>
+const AnnounceMents = lazy(() =>
   import("./components/common/announcements/AnnounceMents.jsx")
 );
 const CreateAnnouncement = lazy(() =>
@@ -78,6 +78,8 @@ const EditStudent = lazy(() => import("./components/pages/admins/list/student/Ed
 const AdminIssueProfile = lazy(() => import("./components/pages/admins/list/issues/AdminIssueProfile.jsx"));
 
 const PageLoader = lazy(() => import("./components/common/PageLoader.jsx"))
+
+const AccountantDashBoard = lazy(() => import("./components/pages/accountant/AccountantDashBoard.jsx"))
 
 import { removeLoggedinUser, selectLoggedinUserAllState, setError, setLoggedinUser } from './utils/store/logedinUser'
 
@@ -159,7 +161,7 @@ function App() {
                 <Route path="issues/:id" element={<AdminIssueProfile />} />
                 <Route path="issues/new" element={<MaintenanceForm />} />
                 <Route path="anns" element={<AnnounceMents />} />
-                <Route path="anns/:id" element={<AnnouncementDetail />} />
+                <Route path="anns/:id" element={<AnnounceMentDetail />} />
                 <Route path="*" element={<NotFound />} />
 
               </Route>
@@ -176,7 +178,7 @@ function App() {
                 <Route path="hostel/new" element={<HostelForm />} />
                 <Route path="hostel/:id/edit" element={<EditHostel />} />
 
-                <Route path="anns" element={<Announcements />} />
+                <Route path="anns" element={<AnnounceMents />} />
                 <Route path="anns/new" element={<CreateAnnouncement />} />
                 <Route path="anns/:id" element={<AnnounceMentDetail />} />
                 <Route path="anns/:id/edit" element={<EditAnnouncement />} />
@@ -192,6 +194,7 @@ function App() {
                 <Route path="issues/:id" element={<AdminIssueProfile />} />
                 <Route path="leaves" element={<LeavesList />} />
                 <Route path="allotmenet" element={<AdminALlotment />} />
+                <Route path="accountant" element={<AccountantDashBoard />} />
                 <Route path="*" element={<NotFound />} />
 
               </Route>

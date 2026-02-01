@@ -35,7 +35,8 @@ const issuesSlice = createSlice({
     },
     setIssue: (state, action) => {
       const issue = action.payload;
-      const index = state.items.findIndex(i => i._id === issue._id);
+      const index = state.items.findIndex(i => i._id === issue?._id);
+      console.log(index, issue)
       if (index !== -1) {
         state.items[index] = issue
       } else {

@@ -18,7 +18,7 @@ export const sidebarConfig = {
         { label: "Verify Allotment", icon: IdCard, path: "/admin/allotmenet" },
         { label: "Issues", icon: Wrench, path: "/admin/issues" },
         { label: "Leaves", icon: CalendarDays, path: "/admin/leaves" },
-        { label: "Payments", icon: CreditCard, path: null },
+        { label: "Payments", icon: CreditCard, path: "/admin/accountant" },
     ],
 
     student: [

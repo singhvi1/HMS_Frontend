@@ -13,7 +13,7 @@ import { useRoomStateToggle } from "../../../../../customHooks/useRoomStateToggl
 import PageLoader from "../../../../common/PageLoader";
 import { RefreshCcw } from "lucide-react";
 import { useAllotmentStatus } from "../../../../../customHooks/useAllotment";
-import toast from "react-hot-toast";
+import ExcelDownloadButton from "../../../../common/ui/downloadbutton/ExcelDownloadButton";
 
 
 
@@ -82,6 +82,7 @@ const RoomsList = () => {
                     <h2 className="text-xl font-semibold text-gray-800">
                         Room List
                     </h2>
+
                     <Button
                         variant="text"
                         className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
@@ -92,6 +93,7 @@ const RoomsList = () => {
                     </Button>
                 </div>
                 <div className="space-x-2">
+                    <ExcelDownloadButton type={"roomwise"} />
                     <Button
                         variant="success"
                         onClick={() => navigate("/admin/students/new")}

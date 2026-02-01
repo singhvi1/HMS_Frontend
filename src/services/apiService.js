@@ -177,5 +177,5 @@ export const allotmentService = {
 }
 
 export const excelService = {
-  getExcel: (type) => api.get(`/students/export/${type}`, { responseType: 'blob' }),
+  getExcel: (type, filters) => api.get(`/students/export/${type}`, { params: filters, responseType: 'blob' }),
 }

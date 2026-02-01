@@ -4,7 +4,7 @@ import { excelService } from '../../../../services/apiService';
 import Button from '../Button';
 import { FILE_NAMES, TITLES } from '../../../../utils/constant';
 
-const ExcelDownloadButton = ({ type }) => {
+const ExcelDownloadButton = ({ type, filters = {} }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const ExcelDownloadButton = ({ type }) => {
         try {
             setLoading(true);
 
-            const res = await excelService.getExcel(type);
+            const res = await excelService.getExcel(type, filters);
 
             const blob = new Blob(
                 [res.data],

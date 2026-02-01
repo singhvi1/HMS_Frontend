@@ -23,6 +23,7 @@ import PageLoader from "../../../common/PageLoader";
 import { verificationRequestColumns } from "../../../../../MockData";
 import { useNavigate } from "react-router-dom";
 import useVerificationStatus from "../../../../customHooks/useVerification";
+import ExcelDownloadButton from "../../../common/ui/downloadbutton/ExcelDownloadButton";
 
 
 const VerificationRequestTable = () => {
@@ -33,7 +34,11 @@ const VerificationRequestTable = () => {
 
 
     const filters = useSelector(selectVerificationRequestsFilters);
+    const excelFilters = {
+        phase: filters?.phase || "both",
+        verification_status: filters?.verification_status || "all",
 
+    }
     const { items, page, limit, pages } =
         useSelector(selectVerificationRequestsPageData);
 
@@ -102,6 +107,7 @@ const VerificationRequestTable = () => {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">
                     Student Room Verification Requests
+                    <ExcelDownloadButton type="allotment" filters={excelFilters} />
                 </h2>
 
                 <Button

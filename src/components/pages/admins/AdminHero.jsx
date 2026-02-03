@@ -1,4 +1,3 @@
-import { ShieldCheck } from "lucide-react";
 import QuickInfo from "./QuickInfo";
 import { useSelector } from "react-redux";
 import { selectLoggedinUserAllState } from "../../../utils/store/logedinUser";
@@ -9,7 +8,7 @@ const AdminHero = () => {
     <div className="bg-white rounded-xl shadow p-6 mb-8">
       <div className="text-center mb-6">
         <h1 className="text-3xl font-extrabold text-gray-800">
-          Himalya Hostel
+          Kurukshetra Hostel
         </h1>
         <p className="text-sm text-gray-500 mt-1">
           Admin Dashboard
@@ -21,8 +20,13 @@ const AdminHero = () => {
 
         {/* Admin Info */}
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-            <ShieldCheck size={28} />
+          <div className="w-1/5 h-2/3 flex items-center justify-center bg-gray-50">
+            <img
+              src="/pec_centenary_logo.jpg"
+              alt="PEC Logo"
+              className="w-full h-full object-cover  bg-white"
+              onError={(e) => { e.target.src = 'https://via.placeholder.com/64?text=PEC'; }}
+            />
           </div>
 
           <div>

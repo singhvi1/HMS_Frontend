@@ -30,7 +30,7 @@ const Topbar = ({ user, url }) => {
   };
 
   return (
-    <div className="hidden md:flex bg-linear-to-r from-blue-700 to-indigo-800 text-white shadow-lg px-8 py-4 items-center justify-between">
+    <div className="hidden md:flex bg-linear-to-r from-red-600 to-amber-500 text-white shadow-lg px-8 py-4 items-center justify-between">
 
       {/* Left: Branding */}
       <Link to="/" className="flex items-center gap-4 group">
@@ -69,12 +69,15 @@ const Topbar = ({ user, url }) => {
         {user && (
           <Button
             variant="text"
-            title={"logout"}
+            title="Logout"
             onClick={handleLogout}
-            className="flex items-center gap-2 text-sm font-bold bg-white text-indigo-700 px-5 py-2 rounded-lg hover:bg-blue-50 transition-colors shadow-md active:transform active:scale-95"
+            className="flex gap-2 items-center px-5 py-2 rounded-lg font-bold text-white 
+               bg-white/10 backdrop-blur-md border border-white/20 
+               hover:bg-white hover:text-red-600 transition-all duration-300 
+               shadow-sm active:scale-95"
           >
-            <LogOut size={16} />
             Logout
+            <LogOut size={18} strokeWidth={2.5} />
           </Button>
         )}
       </div>

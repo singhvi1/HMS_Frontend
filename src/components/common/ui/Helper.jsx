@@ -37,7 +37,7 @@ export const PecLogo = ({ size = "medium", className = "" }) => {
             <img
                 src="/pecFavicon.png"
                 alt="PÉC"
-                className={`${sizeClasses[size] || sizeClasses.medium} ${className}`}
+                className={`${sizeClasses[size] || sizeClasses.medium} ${className} bg-none `}
             />
 
         </>

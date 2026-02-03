@@ -36,6 +36,7 @@ const SideBar = ({ isOpen, onClose, role }) => {
               key={label}
               icon={icon}
               label={label}
+              active={location.pathname === path}
               onClick={() => {
                 if (path) navigate(path);
                 onClose();
